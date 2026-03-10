@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="RSVPMobile.Views.QRPassView"
+             Title="QRPassView"
+             Shell.NavBarIsVisible="False">
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="20">
+            <Grid ColumnDefinitions="Auto, *, Auto">
+                <HorizontalStackLayout Spacing="5">
+                    <Image Source="back_arrow.png" HeightRequest="20"/>
+                    <Label Text="Back" TextColor="White" VerticalOptions="Center"/>
+                </HorizontalStackLayout>
+                <Label Grid.Column="1" Text="Your Pass" TextColor="White" 
+                       FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center"/>
+            </Grid>
+
+            <Border Style="{StaticResource SuccessBorderStyle}">
+                <HorizontalStackLayout Spacing="15">
+                    <Image Source="check_circle_white.png" HeightRequest="30"/>
+                    <VerticalStackLayout>
+                        <Label Text="RSVP Confirmed!" TextColor="White" FontAttributes="Bold" FontSize="18"/>
+                        <Label Text="You're all set for the event" TextColor="White" Opacity="0.9"/>
+                    </VerticalStackLayout>
+                </HorizontalStackLayout>
+            </Border>
+
+            <Border Style="{StaticResource StatsCardStyle}" Padding="0">
+                <VerticalStackLayout>
+                    <Image Source="fashion_gala.png" Aspect="AspectFill" HeightRequest="180"/>
+                    <VerticalStackLayout Padding="20" Spacing="12">
+                        <Label Text="Fashion Week Gala 2025" FontSize="22" FontAttributes="Bold" TextColor="White"/>
+                        <HorizontalStackLayout Spacing="10">
+                            <Image Source="calendar_purple.png" HeightRequest="16"/>
+                            <Label Text="March 15, 2025" TextColor="{StaticResource SecondaryText}"/>
+                        </HorizontalStackLayout>
+                        <HorizontalStackLayout Spacing="10">
+                            <Image Source="clock_purple.png" HeightRequest="16"/>
+                            <Label Text="7:00 PM - 11:00 PM" TextColor="{StaticResource SecondaryText}"/>
+                        </HorizontalStackLayout>
+                        <HorizontalStackLayout Spacing="10">
+                            <Image Source="location_purple.png" HeightRequest="16"/>
+                            <Label Text="Grand Convention Center, NYC" TextColor="{StaticResource SecondaryText}"/>
+                        </HorizontalStackLayout>
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+            </Border>
+
+            <Border Style="{StaticResource StatsCardStyle}" Padding="25">
+                <VerticalStackLayout Spacing="15">
+                    <Label Text="Your Check-in QR Code" TextColor="White" FontAttributes="Bold" 
+                           HorizontalOptions="Center" FontSize="18"/>
+                    <Label Text="Present this QR code at the entrance for quick check-in" 
+                           TextColor="{StaticResource SecondaryText}" HorizontalTextAlignment="Center"/>
+                    <Border BackgroundColor="White" Padding="15" StrokeShape="RoundRectangle 12" 
+                            HorizontalOptions="Center" HeightRequest="200" WidthRequest="200">
+                        <Image Source="mock_qr_code.png"/>
+                    </Border>
+                </VerticalStackLayout>
+            </Border>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="RSVPMobile.Views.CreateEventView"
+             Title="CreateEventView">
+    <ScrollView>
+        <VerticalStackLayout Spacing="20" Padding="30">
+
+            <Label Text="Create New Event" FontSize="28" FontAttributes="Bold" TextColor="White" />
+            <Label Text="Fill in the details to publish your event" TextColor="{StaticResource SecondaryText}" />
+
+            <VerticalStackLayout Spacing="8">
+                <Label Text="Event Title" TextColor="White" FontAttributes="Bold" />
+                <Border Style="{StaticResource InputBorderStyle}">
+                    <Entry Placeholder="e.g. Summer Gala" PlaceholderColor="#4B5563" TextColor="White" />
+                </Border>
+            </VerticalStackLayout>
+
+            <VerticalStackLayout Spacing="8">
+                <Label Text="Event Type" TextColor="White" FontAttributes="Bold" />
+                <Border Style="{StaticResource InputBorderStyle}">
+                    <Picker Title="Select event type" Style="{StaticResource PickerStyle}">
+                        <Picker.Items>
+                            <x:String>Wedding</x:String>
+                            <x:String>Party</x:String>
+                            <x:String>Conference</x:String>
+                            <x:String>Workshop</x:String>
+                            <x:String>Concert</x:String>
+                        </Picker.Items>
+                    </Picker>
+                </Border>
+            </VerticalStackLayout>
+
+            <Grid ColumnDefinitions="*, *" ColumnSpacing="15">
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="Date" TextColor="White" FontAttributes="Bold" />
+                    <Border Style="{StaticResource InputBorderStyle}">
+                        <DatePicker MinimumDate="2024-01-01" TextColor="White" />
+                    </Border>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Grid.Column="1" Spacing="8">
+                    <Label Text="Time" TextColor="White" FontAttributes="Bold" />
+                    <Border Style="{StaticResource InputBorderStyle}">
+                        <TimePicker Time="12:00:00" TextColor="White" />
+                    </Border>
+                </VerticalStackLayout>
+            </Grid>
+
+            <VerticalStackLayout Spacing="8">
+                <Label Text="Location" TextColor="White" FontAttributes="Bold" />
+                <Border Style="{StaticResource InputBorderStyle}">
+                    <Entry Placeholder="Enter address or venue" PlaceholderColor="#4B5563" TextColor="White" />
+                </Border>
+            </VerticalStackLayout>
+
+            <VerticalStackLayout Spacing="8">
+                <Label Text="Description" TextColor="White" FontAttributes="Bold" />
+                <Border Style="{StaticResource InputBorderStyle}" HeightRequest="120">
+                    <Editor Placeholder="Tell us about the event..." 
+                            PlaceholderColor="#4B5563" 
+                            TextColor="White" 
+                            AutoSize="Disabled" />
+                </Border>
+            </VerticalStackLayout>
+
+            <Border Style="{StaticResource InputBorderStyle}" HeightRequest="150" StrokeDashArray="4,2" StrokeThickness="2">
+                <VerticalStackLayout VerticalOptions="Center" Spacing="10">
+                    <Image Source="upload_icon.png" HeightRequest="30" />
+                    <Label Text="Tap to upload event banner" TextColor="{StaticResource SecondaryText}" HorizontalOptions="Center" />
+                </VerticalStackLayout>
+            </Border>
+
+            <Button Text="Publish Event" Style="{StaticResource PrimaryButtonStyle}" Margin="0,10,0,30" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

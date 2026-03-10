@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="RSVPMobile.Views.AttendeeView"
+             Title="AttendeeView"
+             xmlns:vm="clr-namespace:RSVPMobile.ViewModels"
+             Shell.NavBarIsVisible="False">
+
+
+    <Grid RowDefinitions="*, Auto">
+        <ScrollView Grid.Row="0">
+            <VerticalStackLayout Padding="20" Spacing="15">
+                <Label Text="Admin Panel" TextColor="{StaticResource SecondaryText}" FontSize="12"/>
+                <Label Text="Attendees" FontSize="28" FontAttributes="Bold" TextColor="White"/>
+
+                <Grid ColumnDefinitions="*, *, *" ColumnSpacing="10">
+                    <Border Style="{StaticResource StatsCardStyle}">
+                        <VerticalStackLayout>
+                            <Label Text="8" FontSize="20" FontAttributes="Bold" TextColor="White"/>
+                            <Label Text="Total" FontSize="10" TextColor="{StaticResource SecondaryText}"/>
+                        </VerticalStackLayout>
+                    </Border>
+                    <Border Grid.Column="1" Style="{StaticResource StatsCardStyle}">
+                        <VerticalStackLayout>
+                            <Label Text="5" FontSize="20" FontAttributes="Bold" TextColor="#4ADE80"/>
+                            <Label Text="Confirmed" FontSize="10" TextColor="{StaticResource SecondaryText}"/>
+                        </VerticalStackLayout>
+                    </Border>
+                    <Border Grid.Column="2" Style="{StaticResource StatsCardStyle}">
+                        <VerticalStackLayout>
+                            <Label Text="2" FontSize="20" FontAttributes="Bold" TextColor="#FBBF24"/>
+                            <Label Text="Pending" FontSize="10" TextColor="{StaticResource SecondaryText}"/>
+                        </VerticalStackLayout>
+                    </Border>
+                </Grid>
+
+                <Border Style="{StaticResource SearchBorderStyle}">
+                    <Entry Placeholder="Search by name or email..." PlaceholderColor="#4B5563" TextColor="White"/>
+                </Border>
+
+                <CollectionView ItemsSource="{Binding Attendees}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="vm:Attendee">
+                            <Border Style="{StaticResource StatsCardStyle}" Margin="0,5">
+                                <Grid ColumnDefinitions="50, *, Auto" VerticalOptions="Center">
+                                    <Border BackgroundColor="#2D2D3A" StrokeShape="RoundRectangle 25" HeightRequest="40" WidthRequest="40">
+                                        <Label Text="{Binding Initial}" HorizontalOptions="Center" VerticalOptions="Center" TextColor="{StaticResource PrimaryPurple}"/>
+                                    </Border>
+                                    <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Margin="10,0">
+                                        <Label Text="{Binding Name}" TextColor="White" FontAttributes="Bold"/>
+                                        <Label Text="{Binding Email}" TextColor="{StaticResource SecondaryText}" FontSize="12"/>
+                                    </VerticalStackLayout>
+                                    <Border Grid.Column="2" StrokeShape="RoundRectangle 10" Padding="8,2" Stroke="{Binding StatusColor}">
+                                        <Label Text="{Binding Status}" TextColor="{Binding StatusColor}" FontSize="10"/>
+                                    </Border>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <Border Grid.Row="1" BackgroundColor="#12121B" StrokeThickness="1" Stroke="#1C1C26" HeightRequest="80">
+            <Grid ColumnDefinitions="*, *, *, *">
+                <VerticalStackLayout Grid.Column="0" VerticalOptions="Center">
+                    <Image Source="calendar_icon.png" HeightRequest="24" Opacity="0.5"/>
+                    <Label Text="Events" HorizontalOptions="Center" TextColor="{StaticResource SecondaryText}" FontSize="10"/>
+                </VerticalStackLayout>
+                <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
+                    <Image Source="users_active.png" HeightRequest="24"/>
+                    <Label Text="Attendees" HorizontalOptions="Center" TextColor="{StaticResource PrimaryPurple}" FontSize="10"/>
+                </VerticalStackLayout>
+                <VerticalStackLayout Grid.Column="2" VerticalOptions="Center">
+                    <Image Source="rsvp_icon.png" HeightRequest="24" Opacity="0.5"/>
+                    <Label Text="RSVP" HorizontalOptions="Center" TextColor="{StaticResource SecondaryText}" FontSize="10"/>
+                </VerticalStackLayout>
+                <VerticalStackLayout Grid.Column="3" VerticalOptions="Center">
+                    <Image Source="profile_icon.png" HeightRequest="24" Opacity="0.5"/>
+                    <Label Text="Profile" HorizontalOptions="Center" TextColor="{StaticResource SecondaryText}" FontSize="10"/>
+                </VerticalStackLayout>
+            </Grid>
+        </Border>
+    </Grid>
+</ContentPage>

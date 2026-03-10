@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <Color x:Key="BackgroundDark">#12121B</Color>
+    <Color x:Key="SurfaceDark">#1C1C26</Color>
+    <Color x:Key="PrimaryPurple">#8B5CF6</Color>
+    <Color x:Key="SecondaryText">#94A3B8</Color>
+    <Color x:Key="BorderDark">#2D2D3A</Color>
+
+    <Style x:Key="InputBorderStyle" TargetType="Border">
+        <Setter Property="StrokeShape" Value="RoundRectangle 12" />
+        <Setter Property="BackgroundColor" Value="{StaticResource SurfaceDark}" />
+        <Setter Property="StrokeThickness" Value="1" />
+        <Setter Property="Stroke" Value="{StaticResource BorderDark}" />
+        <Setter Property="Padding" Value="10,0" />
+        <Setter Property="HeightRequest" Value="55" />
+    </Style>
+
+    <Style x:Key="PrimaryButtonStyle" TargetType="Button">
+        <Setter Property="BackgroundColor" Value="{StaticResource PrimaryPurple}" />
+        <Setter Property="TextColor" Value="White" />
+        <Setter Property="CornerRadius" Value="12" />
+        <Setter Property="HeightRequest" Value="55" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="FontSize" Value="16" />
+    </Style>
+
+    <Style x:Key="RoleCardStyle" TargetType="Border">
+        <Setter Property="StrokeShape" Value="RoundRectangle 16" />
+        <Setter Property="BackgroundColor" Value="{StaticResource SurfaceDark}" />
+        <Setter Property="Stroke" Value="{StaticResource BorderDark}" />
+        <Setter Property="VisualStateManager.VisualStateGroups">
+            <VisualStateGroupList>
+                <VisualStateGroup Name="CommonStates">
+                    <VisualState Name="Normal" />
+                    <VisualState Name="Selected">
+                        <VisualState.Setters>
+                            <Setter Property="Stroke" Value="{StaticResource PrimaryPurple}" />
+                            <Setter Property="StrokeThickness" Value="2" />
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateGroupList>
+        </Setter>
+    </Style>
+
+    <Style x:Key="SelectableRoleStyle" TargetType="Border">
+        <Setter Property="StrokeShape" Value="RoundRectangle 12" />
+        <Setter Property="StrokeThickness" Value="2" />
+        <Setter Property="HeightRequest" Value="110" />
+        <Setter Property="BackgroundColor" Value="#1C1C26" />
+        <Setter Property="VisualStateManager.VisualStateGroups">
+            <VisualStateGroupList>
+                <VisualStateGroup x:Name="CommonStates">
+                    <VisualState x:Name="Normal">
+                        <VisualState.Setters>
+                            <Setter Property="Stroke" Value="#2D2D3A" />
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState x:Name="Selected">
+                        <VisualState.Setters>
+                            <Setter Property="Stroke" Value="#8B5CF6" />
+                            <Setter Property="BackgroundColor" Value="#1C1C26" />
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateGroupList>
+        </Setter>
+    </Style>
+
+
+    <Style x:Key="StatsCardStyle" TargetType="Border">
+        <Setter Property="StrokeShape" Value="RoundRectangle 16" />
+        <Setter Property="BackgroundColor" Value="#1C1C26" />
+        <Setter Property="Padding" Value="15" />
+        <Setter Property="StrokeThickness" Value="0" />
+    </Style>
+
+    <Style x:Key="SearchBorderStyle" TargetType="Border">
+        <Setter Property="StrokeShape" Value="RoundRectangle 12" />
+        <Setter Property="BackgroundColor" Value="#1C1C26" />
+        <Setter Property="HeightRequest" Value="45" />
+        <Setter Property="StrokeThickness" Value="0" />
+        <Setter Property="Padding" Value="10,0" />
+    </Style>
+
+    <Style x:Key="BottomNavStyle" TargetType="Grid">
+        <Setter Property="BackgroundColor" Value="#12121B" />
+        <Setter Property="HeightRequest" Value="70" />
+    </Style>
+
+    <Style x:Key="PickerStyle" TargetType="Picker">
+        <Setter Property="TextColor" Value="White" />
+        <Setter Property="TitleColor" Value="#4B5563" />
+        <Setter Property="FontSize" Value="15" />
+        <Setter Property="HeightRequest" Value="45" />
+    </Style>
+
+    <Color x:Key="SuccessGreen">#10B981</Color>
+
+    <Style x:Key="SuccessBorderStyle" TargetType="Border">
+        <Setter Property="StrokeShape" Value="RoundRectangle 16" />
+        <Setter Property="BackgroundColor" Value="{StaticResource SuccessGreen}" />
+        <Setter Property="Padding" Value="15" />
+    </Style>
+
+    <Style x:Key="ProfileHeaderStyle" TargetType="Border">
+        <Setter Property="StrokeShape" Value="RoundRectangle 24" />
+        <Setter Property="BackgroundColor" Value="{StaticResource SurfaceDark}" />
+        <Setter Property="Padding" Value="25" />
+    </Style>
+
+    
+</ResourceDictionary>

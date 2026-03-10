@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="RSVPMobile.Views.LoginView"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             Title="Login View" 
+            BackgroundColor="{StaticResource BackgroundDark}"
+             NavigationPage.HasNavigationBar="False"
+             xmlns:vm="clr-namespace:RSVPMobile.ViewModels">
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="20" Padding="30" VerticalOptions="Center">
+
+            <Border StrokeShape="RoundRectangle 20" BackgroundColor="#2D204A" 
+                    HeightRequest="80" WidthRequest="80" HorizontalOptions="Center">
+                <Image Source="rsvp_logo.png" HeightRequest="40" />
+            </Border>
+
+            <Label Text="Welcome Back" FontSize="32" FontAttributes="Bold" 
+                   TextColor="White" HorizontalOptions="Center" />
+            <Label Text="Sign in to manage your events and RSVPs" 
+                   TextColor="#94A3B8" HorizontalOptions="Center" Margin="0,0,0,20"/>
+
+            <VerticalStackLayout Spacing="8">
+                <Label Text="Email" TextColor="White" FontAttributes="Bold"/>
+                <Border StrokeShape="RoundRectangle 12" BackgroundColor="#1C1C26" StrokeThickness="0">
+                    <Entry Placeholder="Enter your email" PlaceholderColor="#4B5563" 
+                           TextColor="White" Margin="10,0"/>
+                </Border>
+            </VerticalStackLayout>
+
+            <VerticalStackLayout Spacing="8">
+                <Label Text="Password" TextColor="White" FontAttributes="Bold"/>
+                <Border StrokeShape="RoundRectangle 12" BackgroundColor="#1C1C26" StrokeThickness="0">
+                    <Grid ColumnDefinitions="*, Auto">
+                        <Entry IsPassword="True" Placeholder="Enter your password" 
+                               PlaceholderColor="#4B5563" TextColor="White" Margin="10,0"/>
+                        <Image Grid.Column="1" Source="eye_icon.png" Margin="10" />
+                    </Grid>
+                </Border>
+                <Label Text="Forgot Password?" TextColor="#8B5CF6" HorizontalOptions="End" FontSize="12"/>
+            </VerticalStackLayout>
+
+            <Button Text="Sign In" 
+        Style="{StaticResource PrimaryButtonStyle}" 
+        Command="{Binding SignInCommand}" 
+        Margin="0,10" />
+
+            <Label Text="or" TextColor="#4B5563" HorizontalOptions="Center" />
+
+            <Button Text="Continue with Google" BackgroundColor="#1C1C26" TextColor="White" 
+                    CornerRadius="12" HeightRequest="50" BorderWidth="1"/>
+
+            <HorizontalStackLayout HorizontalOptions="Center" Spacing="5" Margin="0,10">
+                <Label Text="Don't have an account?" TextColor="White" />
+
+                <Label Text="Sign Up" 
+           TextColor="{StaticResource PrimaryPurple}" 
+           FontAttributes="Bold">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnSignUpTapped" />
+                    </Label.GestureRecognizers>
+                </Label>
+            </HorizontalStackLayout>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

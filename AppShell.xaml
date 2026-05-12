@@ -13,32 +13,31 @@
         Title="Login"
         ContentTemplate="{DataTemplate views:LoginView}"
         Route="LoginView" />
-    
+
     <ShellContent
         Title="Sign UP"
         ContentTemplate="{DataTemplate views:SignupView}"
         Route="SignupView" />
 
-    <ShellContent
-        Title="HomePage"
-        ContentTemplate="{DataTemplate views:AttendeeView}"
-        Route="AttendeeView" />
- 
-    <TabBar >
+    <TabBar Shell.BackgroundColor="#12121B"
+        Shell.UnselectedColor="White"
+        Shell.ForegroundColor="#8B5CF6"
+        Shell.TabBarBackgroundColor="#12121B"
+        Shell.TitleColor="White">
 
-        <Tab Title="Events" Icon="calendar_icon.png">
+        <Tab Title="Events" Icon="calendar_icon.png" Route="DashboardView">
             <ShellContent ContentTemplate="{DataTemplate views:DashboardView}" />
         </Tab>
 
-        <Tab Title="Attendees" Icon="users_icon.png">
+        <Tab Title="Attendees" Icon="users_icon.png" Route="AttendeeView">
             <ShellContent ContentTemplate="{DataTemplate views:AttendeeView}" />
         </Tab>
 
-        <Tab Title="RSVP" Icon="rsvp_icon.png">
+        <Tab Title="RSVP" Icon="rsvp_icon.png" Route="RSVPView">
             <ShellContent ContentTemplate="{DataTemplate views:RSVPView}" />
         </Tab>
 
-        <Tab Title="Profile" Icon="profile_icon.png">
+        <Tab Title="Profile" Icon="profile_icon.png" Route="ProfileView">
             <ShellContent ContentTemplate="{DataTemplate views:ProfileView}" />
         </Tab>
     </TabBar>

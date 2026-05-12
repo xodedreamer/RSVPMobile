@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="RSVPMobile.Views.RSVPView"
+             Title="RSVPView"
+             BackgroundColor="{StaticResource BackgroundDark}"
+             Shell.NavBarIsVisible="False">
+
+    <Grid RowDefinitions="*, Auto">
+        <ScrollView Grid.Row="0">
+            <VerticalStackLayout Padding="20" Spacing="25">
+
+                <Label Text="Event RSVP" FontSize="28" FontAttributes="Bold" TextColor="White"/>
+                <Label Text="Confirm your attendance for upcoming events" 
+                       TextColor="{StaticResource SecondaryText}" Margin="0,-15,0,0"/>
+
+                <Border Style="{StaticResource StatsCardStyle}" Padding="20">
+                    <VerticalStackLayout Spacing="15">
+                        <Label Text="Have an invite code?" TextColor="White" FontAttributes="Bold"/>
+                        <Border Style="{StaticResource InputBorderStyle}">
+                            <Grid ColumnDefinitions="*, Auto">
+                                <Entry Placeholder="Enter Event Code" 
+                                       PlaceholderColor="#4B5563" 
+                                       TextColor="White" 
+                                       VerticalOptions="Center"/>
+                                <Button Grid.Column="1" 
+                                        Text="Find" 
+                                        BackgroundColor="{StaticResource PrimaryPurple}"
+                                        HeightRequest="35" 
+                                        Padding="15,0"
+                                        CornerRadius="8"
+                                        Margin="5"/>
+                            </Grid>
+                        </Border>
+                    </VerticalStackLayout>
+                </Border>
+
+                <Label Text="Your Status" FontSize="20" FontAttributes="Bold" TextColor="White"/>
+
+                <VerticalStackLayout Spacing="15">
+                    <Border Style="{StaticResource StatsCardStyle}" Padding="15">
+                        <Grid ColumnDefinitions="60, *, Auto" ColumnSpacing="15">
+                            <Border StrokeShape="RoundRectangle 12" HeightRequest="60" WidthRequest="60">
+                                <Image Source="fashion_gala_thumb.png" Aspect="AspectFill"/>
+                            </Border>
+                            <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
+                                <Label Text="Fashion Week Gala" TextColor="White" FontAttributes="Bold"/>
+                                <Label Text="March 15, 2025" TextColor="{StaticResource SecondaryText}" FontSize="12"/>
+                            </VerticalStackLayout>
+                            <Border Grid.Column="2" 
+                                    Stroke="#10B981" 
+                                    StrokeShape="RoundRectangle 10" 
+                                    Padding="10,4" 
+                                    VerticalOptions="Center">
+                                <Label Text="Confirmed" TextColor="#10B981" FontSize="11" FontAttributes="Bold"/>
+                            </Border>
+                        </Grid>
+                    </Border>
+
+                    <Border Style="{StaticResource StatsCardStyle}" Padding="15">
+                        <Grid ColumnDefinitions="60, *, Auto" ColumnSpacing="15">
+                            <Border StrokeShape="RoundRectangle 12" HeightRequest="60" WidthRequest="60">
+                                <Image Source="tech_conf_thumb.png" Aspect="AspectFill"/>
+                            </Border>
+                            <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
+                                <Label Text="Tech Conference 2025" TextColor="White" FontAttributes="Bold"/>
+                                <Label Text="March 22, 2025" TextColor="{StaticResource SecondaryText}" FontSize="12"/>
+                            </VerticalStackLayout>
+                            <Button Grid.Column="2" 
+                                    Text="RSVP Now" 
+                                    BackgroundColor="{StaticResource PrimaryPurple}"
+                                    FontSize="11"
+                                    HeightRequest="32"
+                                    Padding="10,0"
+                                    CornerRadius="8"
+                                    VerticalOptions="Center"/>
+                        </Grid>
+                    </Border>
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>

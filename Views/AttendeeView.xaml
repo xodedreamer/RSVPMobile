@@ -4,7 +4,8 @@
              x:Class="RSVPMobile.Views.AttendeeView"
              Title="AttendeeView"
              xmlns:vm="clr-namespace:RSVPMobile.ViewModels"
-             Shell.NavBarIsVisible="False">
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="{StaticResource BackgroundDark}">
 
 
     <Grid RowDefinitions="*, Auto">
@@ -60,26 +61,5 @@
                 </CollectionView>
             </VerticalStackLayout>
         </ScrollView>
-
-        <Border Grid.Row="1" BackgroundColor="#12121B" StrokeThickness="1" Stroke="#1C1C26" HeightRequest="80">
-            <Grid ColumnDefinitions="*, *, *, *">
-                <VerticalStackLayout Grid.Column="0" VerticalOptions="Center">
-                    <Image Source="calendar_icon.png" HeightRequest="24" Opacity="0.5"/>
-                    <Label Text="Events" HorizontalOptions="Center" TextColor="{StaticResource SecondaryText}" FontSize="10"/>
-                </VerticalStackLayout>
-                <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
-                    <Image Source="users_active.png" HeightRequest="24"/>
-                    <Label Text="Attendees" HorizontalOptions="Center" TextColor="{StaticResource PrimaryPurple}" FontSize="10"/>
-                </VerticalStackLayout>
-                <VerticalStackLayout Grid.Column="2" VerticalOptions="Center">
-                    <Image Source="rsvp_icon.png" HeightRequest="24" Opacity="0.5"/>
-                    <Label Text="RSVP" HorizontalOptions="Center" TextColor="{StaticResource SecondaryText}" FontSize="10"/>
-                </VerticalStackLayout>
-                <VerticalStackLayout Grid.Column="3" VerticalOptions="Center">
-                    <Image Source="profile_icon.png" HeightRequest="24" Opacity="0.5"/>
-                    <Label Text="Profile" HorizontalOptions="Center" TextColor="{StaticResource SecondaryText}" FontSize="10"/>
-                </VerticalStackLayout>
-            </Grid>
-        </Border>
     </Grid>
 </ContentPage>

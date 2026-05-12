@@ -9,4 +9,5 @@ public partial class DashboardView : ContentPage
 		InitializeComponent();
 		BindingContext = vm;
     }
+
 }

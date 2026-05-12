@@ -38,6 +38,8 @@ namespace RSVPMobile
             builder.Services.AddTransient<EventViewModel>();
 
             builder.Services.AddTransient<ProfileView>();
+            builder.Services.AddTransient<ProfileViewModel>();
+
             builder.Services.AddTransient<RSVPView>();
             builder.Services.AddTransient<QRPassView>();
 

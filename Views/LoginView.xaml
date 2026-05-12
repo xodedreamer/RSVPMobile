@@ -63,9 +63,15 @@
             <HorizontalStackLayout HorizontalOptions="Center" Spacing="5" Margin="0,10">
                 <Label Text="Don't have an account?" TextColor="White" />
 
-             
+                <Label Text="Sign Up" 
+           TextColor="{StaticResource PrimaryPurple}" 
+           FontAttributes="Bold">
+                    <Label.GestureRecognizers>
+                        <!-- Add the Tapped attribute here -->
+                        <TapGestureRecognizer Tapped="OnSignUpTapped" />
+                    </Label.GestureRecognizers>
+                </Label>
             </HorizontalStackLayout>
-
             <ActivityIndicator IsRunning="{Binding IsBusy}" 
                    IsVisible="{Binding IsBusy}" 
                    Color="{StaticResource PrimaryPurple}" 

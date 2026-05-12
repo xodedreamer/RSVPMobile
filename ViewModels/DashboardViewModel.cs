@@ -7,6 +7,14 @@ namespace RSVPMobile.ViewModels
 {
     public partial class DashboardViewModel : ObservableObject
     {
-        public DashboardViewModel() { } 
+        [ObservableProperty]
+        private string _userName;
+
+        public DashboardViewModel()
+        {
+            // Retrieve the name saved during AuthService.LoginAsync
+            // Default to "Guest" if not found
+            UserName = Preferences.Default.Get("user_name", "Guest");
+        }
     }
 }

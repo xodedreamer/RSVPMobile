@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:RSVPMobile.ViewModels"
              x:Class="RSVPMobile.Views.SignupView"
+             x:DataType="vm:SignupViewModel"
              Title="SignupView"
              BackgroundColor="{StaticResource BackgroundDark}"
+             
              NavigationPage.HasNavigationBar="False">
     
     <ScrollView>
@@ -37,36 +40,58 @@
             </Grid>
             
             <VerticalStackLayout Spacing="15">
+                <!-- Full Name -->
                 <VerticalStackLayout Spacing="5">
                     <Label Text="Full Name" TextColor="White" />
                     <Border Style="{StaticResource InputBorderStyle}">
-                        <Entry Placeholder="John Doe" PlaceholderColor="#4B5563" TextColor="White" />
+                        <Entry Text="{Binding FullName, Mode=TwoWay}" 
+                   Placeholder="John Doe" 
+                   PlaceholderColor="#4B5563" 
+                   TextColor="White" />
                     </Border>
                 </VerticalStackLayout>
 
+                <!-- Email -->
                 <VerticalStackLayout Spacing="5">
                     <Label Text="Email" TextColor="White" />
                     <Border Style="{StaticResource InputBorderStyle}">
-                        <Entry Placeholder="john@example.com" PlaceholderColor="#4B5563" TextColor="White" />
+                        <Entry Text="{Binding Email, Mode=TwoWay}" 
+                   Placeholder="john@example.com" 
+                   PlaceholderColor="#4B5563" 
+                   TextColor="White" 
+                   Keyboard="Email"/>
                     </Border>
                 </VerticalStackLayout>
 
+                <!-- Password -->
                 <VerticalStackLayout Spacing="5">
                     <Label Text="Password" TextColor="White" />
                     <Border Style="{StaticResource InputBorderStyle}">
-                        <Entry IsPassword="True" Placeholder="Enter password" TextColor="White" />
+                        <Entry Text="{Binding Password, Mode=TwoWay}" 
+                   IsPassword="True" 
+                   Placeholder="Enter password" 
+                   TextColor="White" />
                     </Border>
                 </VerticalStackLayout>
 
+                <!-- Confirm Password -->
                 <VerticalStackLayout Spacing="5">
                     <Label Text="Confirm Password" TextColor="White" />
                     <Border Style="{StaticResource InputBorderStyle}">
-                        <Entry IsPassword="True" Placeholder="Confirm password" TextColor="White" />
+                        <Entry Text="{Binding ConfirmPassword, Mode=TwoWay}" 
+                   IsPassword="True" 
+                   Placeholder="Confirm password" 
+                   TextColor="White" />
                     </Border>
                 </VerticalStackLayout>
             </VerticalStackLayout>
 
-            <Button Text="Sign Up" Style="{StaticResource PrimaryButtonStyle}" Margin="0,10" />
+            <!-- Sign Up Button -->
+            <Button Text="Sign Up" 
+                Style="{StaticResource PrimaryButtonStyle}" 
+                Command="{Binding SignupCommand}" 
+                IsEnabled="{Binding IsNotBusy}"
+                Margin="0,10" />
 
             <Label HorizontalTextAlignment="Center" FontSize="11" TextColor="{StaticResource SecondaryText}">
                 <Label.FormattedText>
@@ -78,6 +103,11 @@
                     </FormattedString>
                 </Label.FormattedText>
             </Label>
+
+            <ActivityIndicator IsRunning="{Binding IsBusy}" 
+                IsVisible="{Binding IsBusy}" 
+                Color="{StaticResource PrimaryPurple}" 
+                HorizontalOptions="Center" />
 
         </VerticalStackLayout>
     </ScrollView>

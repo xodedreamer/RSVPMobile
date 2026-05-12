@@ -1,20 +1,46 @@
-﻿using System;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using IntelliJ.Lang.Annotations;
+using RSVPMobile.Dtos;
+using RSVPMobile.Services.Authentication;
+using System;
 using System.Collections.Generic;
 using System.Text;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 
 namespace RSVPMobile.ViewModels
 {
     public partial class SignupViewModel : ObservableObject
     {
-        [ObservableProperty]
-        private string _selectedRole = "Attendee"; // Default selection
+        [ObservableProperty] private string _fullName;
+        [ObservableProperty] private string _email;
+        [ObservableProperty] private string _password;
+        [ObservableProperty] private string _confirmPassword;
+        [ObservableProperty] private string _selectedRole = "Attendee"; // Default
+        [ObservableProperty] private bool _isBusy;
+
+        private readonly IAuthService _authService;
+
+        public SignupViewModel(IAuthService authService) => _authService = authService;
 
         [RelayCommand]
-        private void SelectRole(string role)
+        public async Task Signup()
         {
-            SelectedRole = role;
+            if (Password != ConfirmPassword)
+            {
+                await Shell.Current.DisplayAlertAsync("Error", "Passwords do not match", "OK");
+                return;
+            }
+
+            IsBusy = true;
+            var request = new SignupRequest(FullName, Email, Password, SelectedRole);
+            var success = await _authService.SignupAsync(request);
+            IsBusy = false;
+
+            if (success)
+            {
+                await Shell.Current.DisplayAlertAsync("Success", "Account created! Please login.", "OK");
+                await Shell.Current.GoToAsync(".."); // Go back to Login
+            }
         }
     }
 }

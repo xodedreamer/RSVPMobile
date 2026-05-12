@@ -10,11 +10,14 @@
     <Grid RowDefinitions="*, Auto">
         <ScrollView Grid.Row="0">
             <VerticalStackLayout Padding="20" Spacing="20">
-
-                <HorizontalStackLayout HorizontalOptions="Fill">
+                
+                <HorizontalStackLayout Spacing="5" Padding="0,20">
                     <VerticalStackLayout Spacing="2">
-                        <Label Text="Welcome back, Admin" TextColor="{StaticResource SecondaryText}" FontSize="14"/>
-                        <Label Text="Event Dashboard" FontSize="28" FontAttributes="Bold" TextColor="White"/>
+                        <Label Text="Welcome back," FontSize="20" TextColor="#94A3B8" />
+                        <Label Text="{Binding UserName}" 
+                        FontSize="20" 
+                        FontAttributes="Bold" 
+                        TextColor="White" />
                     </VerticalStackLayout>
                     <Image Source="sun_icon.png" HorizontalOptions="End" HeightRequest="24" Margin="60,0,0,0"/>
                 </HorizontalStackLayout>

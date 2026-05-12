@@ -67,6 +67,16 @@
                     </Border>
                 </Grid>
             </Border>
+
+            <Button Text="Logout"
+                Command="{Binding LogoutCommand}"
+                BackgroundColor="#EF4444" 
+                TextColor="White"
+                CornerRadius="12"
+                HeightRequest="50"
+                Margin="20"
+                VerticalOptions="End" />
+            
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

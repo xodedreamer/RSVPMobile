@@ -12,23 +12,11 @@ public partial class SignupView : ContentPage
 
     private void OnRoleTapped(object sender, TappedEventArgs e)
     {
-        string selectedRole = e.Parameter.ToString();
+        var selectedRole = e.Parameter.ToString();
+        var vm = (SignupViewModel)BindingContext;
+        vm.SelectedRole = selectedRole; // Update the VM
 
-        if (selectedRole == "Attendee")
-        {
-            VisualStateManager.GoToState(AttendeeCard, "Selected");
-            VisualStateManager.GoToState(AdminCard, "Normal");
-
-            // Optional: Update a Label or variable to store the selection
-            //SelectedRoleLabel.Text = "Attendee selected"; 
-            
-        }
-        else
-        {
-            VisualStateManager.GoToState(AdminCard, "Selected");
-            VisualStateManager.GoToState(AttendeeCard, "Normal");
-
-            //SelectedRoleLabel.Text = "Admin selected";
-        }
+        VisualStateManager.GoToState(AttendeeCard, selectedRole == "Attendee" ? "Selected" : "Normal");
+        VisualStateManager.GoToState(AdminCard, selectedRole == "Admin" ? "Selected" : "Normal");
     }
 }

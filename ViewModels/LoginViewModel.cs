@@ -12,7 +12,7 @@ namespace RSVPMobile.ViewModels
 {
     public partial class LoginViewModel : ObservableObject
     {
-        private bool IsBusy;
+        [ObservableProperty] private bool _isBusy;
  
         [ObservableProperty]
         private string _email = string.Empty;

@@ -18,7 +18,7 @@ namespace RSVPMobile.Services.Authentication
             {
                 // DEBUG: See exactly what is being serialized
                 var json = JsonSerializer.Serialize(loginDto);
-                System.Diagnostics.Debug.WriteLine($"MAUI SENDING: {json}");
+                System.Diagnostics.Debug.WriteLine($"MAUI SENDING LOGIN: {json}");
 
                 var response = await _httpClient.PostAsJsonAsync("auth/login", loginDto);
 
@@ -30,6 +30,14 @@ namespace RSVPMobile.Services.Authentication
                     {
                         // Securely store the JWT for future requests
                         await SecureStorage.Default.SetAsync("auth_token", result.Token);
+
+                        if (!string.IsNullOrEmpty(result.FullName))
+                        {
+                            Preferences.Default.Set("user_name", result.FullName);
+                            Preferences.Default.Set("user_email", result.Email);
+                            Preferences.Default.Set("user_role", result.Role);
+
+                        }
                         return true;
                     }
                 }
@@ -44,8 +52,21 @@ namespace RSVPMobile.Services.Authentication
 
         public async Task<bool> SignupAsync(SignupRequest signupDto)
         {
-            var response = await _httpClient.PostAsJsonAsync("auth/signup", signupDto);
-            return response.IsSuccessStatusCode;
+            try
+            {
+                // Resulting URL: http://10.0.2.2:5148/api/auth/register
+               // DEBUG: See exactly what is being serialized
+                 var json = JsonSerializer.Serialize(signupDto);
+                 System.Diagnostics.Debug.WriteLine($"MAUI SENDING SIGNUP: {json}");
+
+                 var response = await _httpClient.PostAsJsonAsync("auth/register", signupDto);
+                 return response.IsSuccessStatusCode;
+            }
+            catch (Exception)
+            {
+
+                return false;
+            }
         }
 
         public async Task LogoutAsync()

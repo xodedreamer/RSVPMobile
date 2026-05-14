@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using IntelliJ.Lang.Annotations;
 using RSVPMobile.Dtos;
 using RSVPMobile.Services.Authentication;
 using System;

@@ -19,6 +19,12 @@
         ContentTemplate="{DataTemplate views:SignupView}"
         Route="SignupView" />
 
+    <ShellContent
+        Title="Create Event"
+        ContentTemplate="{DataTemplate views:CreateEventView}"
+        Route="CreateEventView" />
+
+
     <TabBar Shell.BackgroundColor="#12121B"
         Shell.UnselectedColor="White"
         Shell.ForegroundColor="#8B5CF6"

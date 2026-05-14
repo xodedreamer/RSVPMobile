@@ -13,14 +13,14 @@
             <VerticalStackLayout Spacing="8">
                 <Label Text="Event Title" TextColor="White" FontAttributes="Bold" />
                 <Border Style="{StaticResource InputBorderStyle}">
-                    <Entry Placeholder="e.g. Summer Gala" PlaceholderColor="#4B5563" TextColor="White" />
+                    <Entry Text="{Binding Title, Mode=TwoWay}" Placeholder="e.g. Summer Gala" PlaceholderColor="#4B5563" TextColor="White" />
                 </Border>
             </VerticalStackLayout>
 
             <VerticalStackLayout Spacing="8">
                 <Label Text="Event Type" TextColor="White" FontAttributes="Bold" />
                 <Border Style="{StaticResource InputBorderStyle}">
-                    <Picker Title="Select event type" Style="{StaticResource PickerStyle}">
+                    <Picker SelectedItem="{Binding EventType, Mode=TwoWay}" Title="Select event type" Style="{StaticResource PickerStyle}">
                         <Picker.Items>
                             <x:String>Wedding</x:String>
                             <x:String>Party</x:String>
@@ -36,14 +36,14 @@
                 <VerticalStackLayout Spacing="8">
                     <Label Text="Date" TextColor="White" FontAttributes="Bold" />
                     <Border Style="{StaticResource InputBorderStyle}">
-                        <DatePicker MinimumDate="2024-01-01" TextColor="White" />
+                        <DatePicker Date="{Binding EventDate, Mode=TwoWay}" MinimumDate="2024-01-01" TextColor="White" />
                     </Border>
                 </VerticalStackLayout>
 
                 <VerticalStackLayout Grid.Column="1" Spacing="8">
                     <Label Text="Time" TextColor="White" FontAttributes="Bold" />
                     <Border Style="{StaticResource InputBorderStyle}">
-                        <TimePicker Time="12:00:00" TextColor="White" />
+                        <TimePicker Time="{Binding EventTime, Mode=TwoWay}" TextColor="White" />
                     </Border>
                 </VerticalStackLayout>
             </Grid>
@@ -51,28 +51,34 @@
             <VerticalStackLayout Spacing="8">
                 <Label Text="Location" TextColor="White" FontAttributes="Bold" />
                 <Border Style="{StaticResource InputBorderStyle}">
-                    <Entry Placeholder="Enter address or venue" PlaceholderColor="#4B5563" TextColor="White" />
+                    <Entry Text="{Binding Location, Mode=TwoWay}" Placeholder="Enter address or venue" PlaceholderColor="#4B5563" TextColor="White" />
                 </Border>
             </VerticalStackLayout>
 
             <VerticalStackLayout Spacing="8">
                 <Label Text="Description" TextColor="White" FontAttributes="Bold" />
                 <Border Style="{StaticResource InputBorderStyle}" HeightRequest="120">
-                    <Editor Placeholder="Tell us about the event..." 
+                    <Editor Text="{Binding Description, Mode=TwoWay}" Placeholder="Tell us about the event..." 
                             PlaceholderColor="#4B5563" 
                             TextColor="White" 
                             AutoSize="Disabled" />
                 </Border>
             </VerticalStackLayout>
 
-            <Border Style="{StaticResource InputBorderStyle}" HeightRequest="150" StrokeDashArray="4,2" StrokeThickness="2">
+            <!-- Image Upload Area -->
+            <Border Style="{StaticResource InputBorderStyle}">
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding PickImageCommand}" />
+                </Border.GestureRecognizers>
                 <VerticalStackLayout VerticalOptions="Center" Spacing="10">
-                    <Image Source="upload_icon.png" HeightRequest="30" />
+                    <!-- Display selected image or fallback icon -->
+                    <Image Source="{Binding SelectedImageSource}" HeightRequest="100" Aspect="AspectFill" />
                     <Label Text="Tap to upload event banner" TextColor="{StaticResource SecondaryText}" HorizontalOptions="Center" />
                 </VerticalStackLayout>
             </Border>
 
-            <Button Text="Publish Event" Style="{StaticResource PrimaryButtonStyle}" Margin="0,10,0,30" />
+            <Button Text="Publish Event" Command="{Binding PublishEventCommand}" 
+                IsEnabled="{Binding IsNotBusy}" Style="{StaticResource PrimaryButtonStyle}" Margin="0,10,0,30" />
 
         </VerticalStackLayout>
     </ScrollView>

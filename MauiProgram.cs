@@ -2,6 +2,7 @@
 //using CommunityToolkit.Maui.Core;
 using Microsoft.Extensions.Logging;
 using RSVPMobile.Services.Authentication;
+using RSVPMobile.Services.Events;
 using RSVPMobile.ViewModels;
 using RSVPMobile.Views;
 
@@ -26,10 +27,24 @@ namespace RSVPMobile
                 ? "http://10.0.2.2:5148/api/"
                 : "http://localhost:5148/api/";
 
+            // 1. Register the handler
+            builder.Services.AddTransient<AuthHeaderHandler>();
+
+            // 2. Register EventService and link the handler
+            builder.Services.AddHttpClient<IEventService, EventService>(client =>
+            {
+                client.BaseAddress = new Uri(baseUrl);
+            })
+            .AddHttpMessageHandler<AuthHeaderHandler>(); // This is the magic line
+
+            // 3. Register AuthService (Keep this separate, NO handler needed)
             builder.Services.AddHttpClient<IAuthService, AuthService>(client =>
             {
                 client.BaseAddress = new Uri(baseUrl);
             });
+
+
+            builder.Services.AddTransient<CreateEventViewModel>();
 
             builder.Services.AddTransient<SignupView>();
             builder.Services.AddTransient<SignupViewModel>();

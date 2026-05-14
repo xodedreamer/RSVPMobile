@@ -84,7 +84,42 @@
                     </VerticalStackLayout>
                 </Border>
 
+
             </VerticalStackLayout>
         </ScrollView>
+
+        <!-- 2. The Fixed Floating Action Button (Outside ScrollView) -->
+        <Border x:Name="FabBorder"
+            HorizontalOptions="End"
+            VerticalOptions="End"
+            Margin="20"
+            HeightRequest="60"
+            WidthRequest="60" 
+            Padding="15,0"
+            BackgroundColor="{StaticResource PrimaryPurple}"
+            StrokeShape="RoundRectangle 30"
+            IsVisible="{Binding IsAdmin}">
+
+            <Border.GestureRecognizers>
+                <PointerGestureRecognizer 
+                PointerEntered="OnFabHoverEntered" 
+                PointerExited="OnFabHoverExited" />
+                <TapGestureRecognizer Tapped="OnCreateEventClicked" />
+            </Border.GestureRecognizers>
+
+            <HorizontalStackLayout Spacing="10" VerticalOptions="Center">
+                <Label Text="+" 
+                   FontSize="28" 
+                   TextColor="White" 
+                   VerticalOptions="Center" />
+
+                <Label Text="Create New Event"
+                   TextColor="White"
+                   FontSize="16"
+                   FontAttributes="Bold"
+                   VerticalOptions="Center"
+                   IsVisible="{Binding IsFabExpanded}" />
+            </HorizontalStackLayout>
+        </Border>
     </Grid>
 </ContentPage>

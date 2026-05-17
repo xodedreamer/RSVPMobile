@@ -1,124 +1,119 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:RSVPMobile.Models"
              x:Class="RSVPMobile.Views.DashboardView"
              Title="DashboardView"
              BackgroundColor="{StaticResource BackgroundDark}"
              Shell.NavBarIsVisible="False">
 
 
-    <Grid RowDefinitions="*, Auto">
-        <ScrollView Grid.Row="0">
-            <VerticalStackLayout Padding="20" Spacing="20">
-                
-                <HorizontalStackLayout Spacing="5" Padding="0,20">
-                    <VerticalStackLayout Spacing="2">
-                        <Label Text="Welcome back," FontSize="20" TextColor="#94A3B8" />
-                        <Label Text="{Binding UserName}" 
-                        FontSize="20" 
-                        FontAttributes="Bold" 
-                        TextColor="White" />
-                    </VerticalStackLayout>
-                    <Image Source="sun_icon.png" HorizontalOptions="End" HeightRequest="24" Margin="60,0,0,0"/>
-                </HorizontalStackLayout>
+    <Grid RowDefinitions="*">
+        <RefreshView IsRefreshing="{Binding IsRefreshing}" Command="{Binding LoadDashboardDataCommand}">
+            <ScrollView>
+                <VerticalStackLayout Padding="20" Spacing="20">
 
-                <Grid ColumnDefinitions="*, *" ColumnSpacing="15">
-                    <Border Style="{StaticResource StatsCardStyle}" BackgroundColor="{StaticResource PrimaryPurple}">
-                        <VerticalStackLayout Spacing="5">
-                            <Image Source="users_white.png" HorizontalOptions="Start" HeightRequest="24"/>
-                            <Label Text="3" FontSize="24" FontAttributes="Bold" TextColor="White"/>
-                            <Label Text="Total Events" TextColor="White" FontSize="12"/>
+                    <Grid ColumnDefinitions="*, Auto" Padding="0,20">
+                        <VerticalStackLayout Spacing="2">
+                            <Label Text="Welcome back," FontSize="20" TextColor="#94A3B8" />
+                            <Label Text="{Binding UserName}" FontSize="20" FontAttributes="Bold" TextColor="White" />
                         </VerticalStackLayout>
-                    </Border>
+                        <Image Grid.Column="1" Source="sun_icon.png" HeightRequest="24" VerticalOptions="Center"/>
+                    </Grid>
 
-                    <Border Grid.Column="1" Style="{StaticResource StatsCardStyle}">
-                        <VerticalStackLayout Spacing="5">
-                            <HorizontalStackLayout Spacing="5">
-                                <Image Source="check_circle_green.png" HeightRequest="18"/>
-                            </HorizontalStackLayout>
-                            <Label Text="393" FontSize="24" FontAttributes="Bold" TextColor="White"/>
-                            <Label Text="Confirmed" TextColor="{StaticResource SecondaryText}" FontSize="12"/>
-                        </VerticalStackLayout>
-                    </Border>
-                </Grid>
-
-                <Label Text="Upcoming Events" FontSize="20" FontAttributes="Bold" TextColor="White" Margin="0,10,0,0"/>
-
-                <Border Style="{StaticResource StatsCardStyle}" Padding="0">
-                    <VerticalStackLayout>
-                        <Border StrokeShape="RoundRectangle 16,16,0,0" HeightRequest="180">
-                            <Image Source="tech_conference_banner.png" Aspect="AspectFill" />
+                    <Grid ColumnDefinitions="*, *" ColumnSpacing="15">
+                        <Border Style="{StaticResource StatsCardStyle}" BackgroundColor="{StaticResource PrimaryPurple}">
+                            <VerticalStackLayout Spacing="5">
+                                <Image Source="users_white.png" HorizontalOptions="Start" HeightRequest="24"/>
+                                <Label Text="{Binding TotalEventsCount}" FontSize="24" FontAttributes="Bold" TextColor="White"/>
+                                <Label Text="Total Events" TextColor="White" FontSize="12"/>
+                            </VerticalStackLayout>
                         </Border>
 
-                        <VerticalStackLayout Padding="15" Spacing="10">
-                            <Label Text="Tech Conference 2025" FontSize="18" FontAttributes="Bold" TextColor="White"/>
-
-                            <HorizontalStackLayout Spacing="10">
-                                <Image Source="calendar_small.png" HeightRequest="14"/>
-                                <Label Text="2025-03-15" TextColor="{StaticResource SecondaryText}" FontSize="13"/>
-                            </HorizontalStackLayout>
-
-                            <HorizontalStackLayout Spacing="10">
-                                <Image Source="clock_small.png" HeightRequest="14"/>
-                                <Label Text="09:00 AM - 05:00 PM" TextColor="{StaticResource SecondaryText}" FontSize="13"/>
-                            </HorizontalStackLayout>
-
-                            <HorizontalStackLayout Spacing="10">
-                                <Image Source="location_small.png" HeightRequest="14"/>
-                                <Label Text="Convention Center, Hall A" TextColor="{StaticResource SecondaryText}" FontSize="13"/>
-                            </HorizontalStackLayout>
-
-                            <BoxView HeightRequest="1" Color="#2D2D3A" Margin="0,5"/>
-
-                            <Grid ColumnDefinitions="*, *">
-                                <HorizontalStackLayout Spacing="8">
-                                    <Image Source="check_green_small.png" HeightRequest="12"/>
-                                    <Label Text="198 confirmed" TextColor="White" FontSize="12"/>
+                        <Border Grid.Column="1" Style="{StaticResource StatsCardStyle}">
+                            <VerticalStackLayout Spacing="5">
+                                <HorizontalStackLayout Spacing="5">
+                                    <Image Source="check_circle_green.png" HeightRequest="18"/>
                                 </HorizontalStackLayout>
-                                <HorizontalStackLayout Grid.Column="1" Spacing="8" HorizontalOptions="End">
-                                    <Image Source="pending_yellow_small.png" HeightRequest="12"/>
-                                    <Label Text="52 pending" TextColor="White" FontSize="12"/>
-                                </HorizontalStackLayout>
-                            </Grid>
-                        </VerticalStackLayout>
-                    </VerticalStackLayout>
-                </Border>
+                                <Label Text="393" FontSize="24" FontAttributes="Bold" TextColor="White"/>
+                                <Label Text="Confirmed" TextColor="{StaticResource SecondaryText}" FontSize="12"/>
+                            </VerticalStackLayout>
+                        </Border>
+                    </Grid>
 
+                    <Label Text="Upcoming Events" FontSize="20" FontAttributes="Bold" TextColor="White" Margin="0,10,0,0"/>
 
-            </VerticalStackLayout>
-        </ScrollView>
+                    <CollectionView ItemsSource="{Binding Events}" SelectionMode="None">
+                        <CollectionView.ItemsLayout>
+                            <LinearItemsLayout Orientation="Vertical" ItemSpacing="15"/>
+                        </CollectionView.ItemsLayout>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="models:EventResponse">
+                                <Border Style="{StaticResource StatsCardStyle}" Padding="0">
+                                    <VerticalStackLayout>
+                                        <Border StrokeShape="RoundRectangle 16,16,0,0" HeightRequest="180">
+                                            <Image Source="{Binding ImageUrl, FallbackValue='tech_conference_banner.png'}" Aspect="AspectFill" />
+                                        </Border>
 
-        <!-- 2. The Fixed Floating Action Button (Outside ScrollView) -->
+                                        <VerticalStackLayout Padding="15" Spacing="10">
+                                            <Label Text="{Binding Title}" FontSize="18" FontAttributes="Bold" TextColor="White"/>
+
+                                            <HorizontalStackLayout Spacing="10">
+                                                <Image Source="calendar_small.png" HeightRequest="14"/>
+                                                <Label Text="{Binding EventDate, StringFormat='{0:yyyy-MM-dd}'}" TextColor="{StaticResource SecondaryText}" FontSize="13"/>
+                                            </HorizontalStackLayout>
+
+                                            <HorizontalStackLayout Spacing="10">
+                                                <Image Source="clock_small.png" HeightRequest="14"/>
+                                                <Label Text="{Binding EventDate, StringFormat='{0:hh:mm tt}'}" TextColor="{StaticResource SecondaryText}" FontSize="13"/>
+                                            </HorizontalStackLayout>
+
+                                            <HorizontalStackLayout Spacing="10">
+                                                <Image Source="location_small.png" HeightRequest="14"/>
+                                                <Label Text="{Binding Location}" TextColor="{StaticResource SecondaryText}" FontSize="13"/>
+                                            </HorizontalStackLayout>
+
+                                            <BoxView HeightRequest="1" Color="#2D2D3A" Margin="0,5"/>
+
+                                            <Grid ColumnDefinitions="*, *">
+                                                <HorizontalStackLayout Spacing="8">
+                                                    <Image Source="check_green_small.png" HeightRequest="12"/>
+                                                    <Label Text="0 confirmed" TextColor="White" FontSize="12"/>
+                                                </HorizontalStackLayout>
+                                                <HorizontalStackLayout Grid.Column="1" Spacing="8" HorizontalOptions="End">
+                                                    <Image Source="pending_yellow_small.png" HeightRequest="12"/>
+                                                    <Label Text="Type: " TextColor="#94A3B8" FontSize="12"/>
+                                                    <Label Text="{Binding Type}" TextColor="White" FontSize="12" FontAttributes="Bold"/>
+                                                </HorizontalStackLayout>
+                                            </Grid>
+                                        </VerticalStackLayout>
+                                    </VerticalStackLayout>
+                                </Border>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+
+                </VerticalStackLayout>
+            </ScrollView>
+        </RefreshView>
+
         <Border x:Name="FabBorder"
-            HorizontalOptions="End"
-            VerticalOptions="End"
-            Margin="20"
-            HeightRequest="60"
-            WidthRequest="60" 
-            Padding="15,0"
-            BackgroundColor="{StaticResource PrimaryPurple}"
-            StrokeShape="RoundRectangle 30"
-            IsVisible="{Binding IsAdmin}">
-
+                HorizontalOptions="End"
+                VerticalOptions="End"
+                Margin="20"
+                HeightRequest="60"
+                WidthRequest="60" 
+                Padding="15,0"
+                BackgroundColor="{StaticResource PrimaryPurple}"
+                StrokeShape="RoundRectangle 30"
+                IsVisible="{Binding IsAdmin}">
             <Border.GestureRecognizers>
-                <PointerGestureRecognizer 
-                PointerEntered="OnFabHoverEntered" 
-                PointerExited="OnFabHoverExited" />
+                <PointerGestureRecognizer PointerEntered="OnFabHoverEntered" PointerExited="OnFabHoverExited" />
                 <TapGestureRecognizer Tapped="OnCreateEventClicked" />
             </Border.GestureRecognizers>
-
             <HorizontalStackLayout Spacing="10" VerticalOptions="Center">
-                <Label Text="+" 
-                   FontSize="28" 
-                   TextColor="White" 
-                   VerticalOptions="Center" />
-
-                <Label Text="Create New Event"
-                   TextColor="White"
-                   FontSize="16"
-                   FontAttributes="Bold"
-                   VerticalOptions="Center"
-                   IsVisible="{Binding IsFabExpanded}" />
+                <Label Text="+" FontSize="28" TextColor="White" VerticalOptions="Center" />
+                <Label Text="Create New Event" TextColor="White" FontSize="16" FontAttributes="Bold" VerticalOptions="Center" IsVisible="{Binding IsFabExpanded}" />
             </HorizontalStackLayout>
         </Border>
     </Grid>

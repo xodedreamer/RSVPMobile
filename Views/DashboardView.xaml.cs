@@ -9,7 +9,16 @@ public partial class DashboardView : ContentPage
 		InitializeComponent();
 		BindingContext = vm;
     }
+    protected override async void OnAppearing()
+    {
+        base.OnAppearing();
 
+        // Safe execution cast to trigger initial feed populate
+        if (BindingContext is DashboardViewModel vm)
+        {
+            await vm.LoadDashboardDataAsync();
+        }
+    }
     private void OnFabHoverEntered(object sender, PointerEventArgs e)
     {
         var vm = (DashboardViewModel)BindingContext;
@@ -32,9 +41,6 @@ public partial class DashboardView : ContentPage
     {
         try
         {
-           // await DisplayAlertAsync("Navigation ", "]Eevent creation screen.", "OK");
-            // Use Shell navigation to push the CreateEventView onto the stack
-            // nameof() ensures that if you rename the class, the navigation won't break
             await Shell.Current.GoToAsync(nameof(CreateEventView));
         }
         catch (Exception ex)

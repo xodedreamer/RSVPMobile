@@ -1,4 +1,5 @@
 ﻿using RSVPMobile.Dtos;
+using RSVPMobile.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -28,6 +29,25 @@ namespace RSVPMobile.Services.Events
             {
                 Debug.WriteLine($"Error creating event: {ex.Message}");
                 return false;
+            }
+        }
+
+        public async Task<IEnumerable<EventResponse>> GetAllEventsAsync()
+        {
+            try
+            {
+               
+                // The AuthHeaderHandler handles token injection cleanly before this line executes
+                var events = await _httpClient.GetFromJsonAsync<IEnumerable<EventResponse>>("events");
+                System.Diagnostics.Debug.WriteLine($"[EventService] SENDING GETEVENTS: {events}");
+                return events ?? Enumerable.Empty<EventResponse>();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"[EventService] Error fetching events feed: {ex.Message}");
+
+                // Return an empty list instead of throwing to prevent the mobile app from crashing
+                return Enumerable.Empty<EventResponse>();
             }
         }
     }

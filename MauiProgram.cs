@@ -43,6 +43,16 @@ namespace RSVPMobile
                 client.BaseAddress = new Uri(baseUrl);
             });
 
+            // 1. Register HTTP Services with the Authorization handler pipeline
+            builder.Services.AddHttpClient<IRSVPService, RSVPService>(client =>
+            {
+                client.BaseAddress = new Uri(baseUrl);
+            })
+            .AddHttpMessageHandler<AuthHeaderHandler>();
+
+            // 2. Register the RSVP MVVM components (Crucial to fix the crash!)
+            builder.Services.AddTransient<RSVPViewModel>();
+            builder.Services.AddTransient<RSVPView>();
 
             builder.Services.AddTransient<CreateEventViewModel>();
 
@@ -55,7 +65,6 @@ namespace RSVPMobile
             builder.Services.AddTransient<ProfileView>();
             builder.Services.AddTransient<ProfileViewModel>();
 
-            builder.Services.AddTransient<RSVPView>();
             builder.Services.AddTransient<QRPassView>();
 
 

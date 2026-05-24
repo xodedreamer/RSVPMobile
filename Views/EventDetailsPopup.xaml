@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+               xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+               xmlns:models="clr-namespace:RSVPMobile.Models"
+               x:Class="RSVPMobile.Views.EventDetailsPopup"
+               x:DataType="models:UserEventRsvpResponse">
+
+    <Grid VerticalOptions="Center" HorizontalOptions="Center" Padding="20">
+        <Border WidthRequest="320" 
+                BackgroundColor="#1E1E2E" 
+                StrokeShape="RoundRectangle 16"
+                Padding="0"
+                StrokeThickness="0">
+            <VerticalStackLayout Spacing="0">
+
+                <Border StrokeShape="RoundRectangle 16,16,0,0" HeightRequest="150">
+                    <Image Source="{Binding ImageUrl, FallbackValue='tech_conference_banner.png'}" Aspect="AspectFill"/>
+                </Border>
+
+                <VerticalStackLayout Padding="20" Spacing="12">
+                    <Label Text="{Binding Title}" FontSize="20" FontAttributes="Bold" TextColor="White"/>
+                    <Label Text="{Binding Type}" TextColor="{StaticResource PrimaryPurple}" FontAttributes="Bold" FontSize="12"/>
+
+                    <HorizontalStackLayout Spacing="10">
+                        <Image Source="calendar_small.png" HeightRequest="14" VerticalOptions="Center"/>
+                        <Label Text="{Binding EventDate, StringFormat='{0:dd MMMM yyyy}'}" TextColor="{StaticResource SecondaryText}" FontSize="13"/>
+                    </HorizontalStackLayout>
+
+                    <HorizontalStackLayout Spacing="10">
+                        <Image Source="location_small.png" HeightRequest="14" VerticalOptions="Center"/>
+                        <Label Text="{Binding Location}" TextColor="{StaticResource SecondaryText}" FontSize="13" LineBreakMode="TailTruncation"/>
+                    </HorizontalStackLayout>
+
+                    <BoxView HeightRequest="1" Color="#2D2D3A" Margin="0,5"/>
+
+                    <ScrollView HeightRequest="80">
+                        <Label Text="{Binding Description, FallbackValue='No description provided for this event.'}" 
+                               TextColor="#94A3B8" 
+                               FontSize="13" />
+                    </ScrollView>
+
+                    <Grid ColumnDefinitions="*, *" ColumnSpacing="12" Margin="0,10,0,0">
+                        <Button Text="Close" 
+                                BackgroundColor="#2D2D3A" 
+                                TextColor="White"
+                                Clicked="OnCloseClicked"
+                                CornerRadius="8"/>
+
+                        <Button Grid.Column="1" 
+                                Text="Accept RSVP" 
+                                BackgroundColor="{StaticResource PrimaryPurple}" 
+                                TextColor="White"
+                                Clicked="OnAcceptClicked"
+                                IsVisible="{Binding IsConfirmed, Converter={StaticResource InvertedBoolConverter}}"
+                                CornerRadius="8"/>
+                    </Grid>
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
+        </Border>
+    </Grid>
+</toolkit:Popup>

@@ -17,44 +17,19 @@
                 <Label Text="Event RSVP" FontSize="28" FontAttributes="Bold" TextColor="White"/>
                 <Label Text="Confirm your attendance for upcoming events" TextColor="{StaticResource SecondaryText}" Margin="0,-15,0,0"/>
 
-                <Border Style="{StaticResource StatsCardStyle}" Padding="20">
-                    <VerticalStackLayout Spacing="15">
-                        <Label Text="Have an invite code?" TextColor="White" FontAttributes="Bold"/>
-                        <Border Style="{StaticResource InputBorderStyle}">
-                            <Grid ColumnDefinitions="*, Auto">
-                                <Entry Placeholder="Enter Event Code" 
-                                       PlaceholderColor="#4B5563" 
-                                       TextColor="White" 
-                                       VerticalOptions="Center"/>
-                                <Button Grid.Column="1" 
-                                        Text="Find" 
-                                        BackgroundColor="{StaticResource PrimaryPurple}"
-                                        HeightRequest="35" 
-                                        Padding="15,0"
-                                        CornerRadius="8"
-                                        Margin="5"/>
-                            </Grid>
-                        </Border>
-                    </VerticalStackLayout>
-                </Border>
-
                 <Border Style="{StaticResource InputBorderStyle}" Padding="5,0">
                     <SearchBar Placeholder="Search events by name or location..."
-                           PlaceholderColor="#4B5563"
-                           TextColor="White"
-                           Text="{Binding SearchText, Mode=TwoWay}">    
+                               PlaceholderColor="#4B5563"
+                               TextColor="White"
+                               Text="{Binding SearchText, Mode=TwoWay}">
                         <SearchBar.Behaviors>
-                            <toolkit:EventToCommandBehavior EventName="TextChanged" 
-                                        Command="{Binding LoadEventsCommand}"/>
+                            <toolkit:EventToCommandBehavior EventName="TextChanged" Command="{Binding ApplyFilterCommand}"/>
                         </SearchBar.Behaviors>
                     </SearchBar>
                 </Border>
 
                 <Grid ColumnDefinitions="*, *" ColumnSpacing="15" HeightRequest="45">
-                    <Button Text="Pending Invites" 
-                            Command="{Binding FilterPendingCommand}"
-                            TextColor="White"
-                            CornerRadius="8">
+                    <Button Text="Pending Invites" Command="{Binding FilterPendingCommand}" TextColor="White" CornerRadius="8">
                         <Button.Triggers>
                             <DataTrigger TargetType="Button" Binding="{Binding ShowConfirmed}" Value="False">
                                 <Setter Property="BackgroundColor" Value="{StaticResource PrimaryPurple}" />
@@ -65,11 +40,7 @@
                         </Button.Triggers>
                     </Button>
 
-                    <Button Grid.Column="1" 
-                            Text="Confirmed" 
-                            Command="{Binding FilterConfirmedCommand}"
-                            TextColor="White"
-                            CornerRadius="8">
+                    <Button Grid.Column="1" Text="Confirmed" Command="{Binding FilterConfirmedCommand}" TextColor="White" CornerRadius="8">
                         <Button.Triggers>
                             <DataTrigger TargetType="Button" Binding="{Binding ShowConfirmed}" Value="True">
                                 <Setter Property="BackgroundColor" Value="{StaticResource PrimaryPurple}" />
@@ -83,12 +54,13 @@
 
                 <Label Text="Your Feeds" FontSize="20" FontAttributes="Bold" TextColor="White"/>
 
-                <CollectionView ItemsSource="{Binding FilteredEvents}" SelectionMode="Single"
-                        SelectionChangedCommand="{Binding ShowEventDetailsCommand}"
-                        SelectionChangedCommandParameter="{Binding SelectedItem, Source={RelativeSource Self}}">
+                <CollectionView ItemsSource="{Binding FilteredEvents}" 
+                                SelectionMode="Single"
+                                SelectionChangedCommand="{Binding ShowEventDetailsCommand}"
+                                SelectionChangedCommandParameter="{Binding SelectedItem, Source={RelativeSource Self}}">
                     <CollectionView.EmptyView>
-                        <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Padding="30" Spacing="10">
-                            <Label Text="No events found" TextColor="{StaticResource SecondaryText}" HorizontalTextAlignment="Center" FontSize="16"/>
+                        <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Padding="30">
+                            <Label Text="No events found matching criteria." TextColor="{StaticResource SecondaryText}" HorizontalTextAlignment="Center"/>
                         </VerticalStackLayout>
                     </CollectionView.EmptyView>
 
@@ -102,32 +74,22 @@
                                     </Border>
 
                                     <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="4">
-                                        <Label Text="{Binding Title}" TextColor="White" FontAttributes="Bold" LineBreakMode="TailTruncation" FontSize="15"/>
+                                        <Label Text="{Binding Title}" TextColor="White" FontAttributes="Bold" FontSize="15" LineBreakMode="TailTruncation"/>
                                         <Label Text="{Binding EventDate, StringFormat='{0:MMMM dd, yyyy}'}" TextColor="{StaticResource SecondaryText}" FontSize="12"/>
                                     </VerticalStackLayout>
 
-                                    <Grid Grid.Column="2" VerticalOptions="Center">
-
-                                        <Border IsVisible="{Binding IsConfirmed}"
-                                                Stroke="#10B981" 
-                                                StrokeThickness="1"
-                                                StrokeShape="RoundRectangle 8" 
-                                                Padding="12,6"
-                                                BackgroundColor="#1010B981">
-                                            <Label Text="Confirmed" TextColor="#10B981" FontSize="12" FontAttributes="Bold" VerticalOptions="Center"/>
-                                        </Border>
-
-                                        <Button IsVisible="{Binding IsConfirmed, Converter={StaticResource InvertedBoolConverter}, FallbackValue=True}"
-                                                Text="RSVP Now" 
-                                                BackgroundColor="{StaticResource PrimaryPurple}"
-                                                TextColor="White"
-                                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:RSVPViewModel}}, Path=AcceptRsvpCommand}"
-                                                CommandParameter="{Binding Id}"
-                                                FontSize="12" 
-                                                HeightRequest="36" 
-                                                Padding="12,0" 
-                                                CornerRadius="8"/>
-                                    </Grid>
+                                    <Border Grid.Column="2" 
+                                            VerticalOptions="Center"
+                                            Stroke="{Binding IsConfirmed, Converter={StaticResource StatusColorConverter}}" 
+                                            StrokeThickness="1"
+                                            StrokeShape="RoundRectangle 8" 
+                                            Padding="12,6"
+                                            BackgroundColor="#0D10B981">
+                                        <Label Text="{Binding IsConfirmed, Converter={StaticResource StatusTextConverter}}" 
+                                               TextColor="{Binding IsConfirmed, Converter={StaticResource StatusColorConverter}}" 
+                                               FontSize="12" 
+                                               FontAttributes="Bold"/>
+                                    </Border>
                                 </Grid>
                             </Border>
                         </DataTemplate>

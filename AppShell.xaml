@@ -23,7 +23,7 @@
         Title="Create Event"
         ContentTemplate="{DataTemplate views:CreateEventView}"
         Route="CreateEventView" />
-
+    <ShellContent Route="eventdetails" ContentTemplate="{DataTemplate views:EventDetailsPage}" />
 
     <TabBar Shell.BackgroundColor="#12121B"
         Shell.UnselectedColor="White"

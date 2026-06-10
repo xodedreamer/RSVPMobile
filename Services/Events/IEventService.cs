@@ -10,5 +10,6 @@ namespace RSVPMobile.Services.Events
     {
         Task<bool> CreateEventAsync(CreateEventRequest eventData);
         Task<IEnumerable<EventResponse>> GetAllEventsAsync(); // Add this line
+        Task<RsvpStatsDto> GetRsvpStatsAsync();
     }
 }

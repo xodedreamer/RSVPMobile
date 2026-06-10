@@ -1,111 +1,149 @@
 ﻿using CommunityToolkit.Maui.Extensions;
+using CommunityToolkit.Maui.Views; // Required for IPopupResult parsing
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using RSVPMobile.Models;
+using RSVPMobile.Services; 
 using RSVPMobile.Services.Events;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Text;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace RSVPMobile.ViewModels
+namespace RSVPMobile.ViewModels;
+
+public partial class RSVPViewModel : ObservableObject
 {
-    public partial class RSVPViewModel : ObservableObject
+    private readonly IRSVPService _rsvpService;
+    private List<UserEventRsvpResponse> _allEvents = new();
+
+    [ObservableProperty] private string _searchText;
+    [ObservableProperty] private bool _showConfirmed = false; // False = Pending, True = Confirmed
+    [ObservableProperty] private bool _isBusy;
+
+    public ObservableCollection<UserEventRsvpResponse> FilteredEvents { get; } = new();
+
+    public RSVPViewModel(IRSVPService rsvpService)
     {
-        private readonly IRSVPService _rsvpService;
-        private List<UserEventRsvpResponse> _allEvents = new();
+        _rsvpService = rsvpService;
+    }
 
-        [ObservableProperty] private string _searchText;
-        [ObservableProperty] private bool _showConfirmed = false; // False = Pending/All, True = Confirmed
-        [ObservableProperty] private bool _isBusy;
+    [RelayCommand]
+    public async Task LoadEventsAsync()
+    {
+        if (IsBusy) return;
 
-        public ObservableCollection<UserEventRsvpResponse> FilteredEvents { get; } = new();
-
-        public RSVPViewModel(IRSVPService rsvpService)
+        IsBusy = true;
+        try
         {
-            _rsvpService = rsvpService;
-        }
-
-        [RelayCommand]
-        public async Task LoadEventsAsync()
-        {
-            IsBusy = true;
+            // Hits http://localhost:5148/api/events/ via your configured service client layer
             var events = await _rsvpService.GetUserEventsAsync();
             _allEvents = events.ToList();
             ApplyFilter();
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"Error fetching user assigned events: {ex.Message}");
+        }
+        finally
+        {
             IsBusy = false;
         }
+    }
 
-        [RelayCommand]
-        private async Task AcceptRsvp(int eventId)
+    [RelayCommand]
+    private async Task AcceptRsvp(int eventId)
+    {
+        var success = await _rsvpService.AcceptRsvpAsync(eventId);
+        if (success)
         {
-            var success = await _rsvpService.AcceptRsvpAsync(eventId);
-            if (success)
+            // Instantly sync internal data state matching the database modification
+            var target = _allEvents.FirstOrDefault(e => e.Id == eventId);
+            if (target != null)
             {
-                // Update local state smoothly without full layout re-render
-                var target = _allEvents.FirstOrDefault(e => e.Id == eventId);
-                if (target != null)
-                {
-                    _allEvents[_allEvents.IndexOf(target)] = target with { IsConfirmed = true };
-                    ApplyFilter();
-                }
+                _allEvents[_allEvents.IndexOf(target)] = target with { IsConfirmed = true };
+                ApplyFilter();
             }
         }
+    }
 
-        [RelayCommand]
-        private void FilterPending()
+    [RelayCommand]
+    private async Task TentativeRsvp(int eventId)
+    {
+        var success = await _rsvpService.AcceptRsvpAsync(eventId);
+        if (success)
         {
-            ShowConfirmed = false;
-            ApplyFilter();
-        }
-
-        [RelayCommand]
-        private void FilterConfirmed()
-        {
-            ShowConfirmed = true;
-            ApplyFilter();
-        }
-
-        // Handles live search matching and status toggles instantly
-        public void ApplyFilter()
-        {
-            var query = _allEvents.AsEnumerable();
-
-            // 1. Filter by status selection
-            query = query.Where(e => e.IsConfirmed == ShowConfirmed);
-
-            // 2. Filter by Search Query matching text
-            if (!string.IsNullOrWhiteSpace(SearchText))
+            // Instantly sync internal data state matching the database modification
+            var target = _allEvents.FirstOrDefault(e => e.Id == eventId);
+            if (target != null)
             {
-                query = query.Where(e => e.Title.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
-                                         e.Location.Contains(SearchText, StringComparison.OrdinalIgnoreCase));
-            }
-
-            FilteredEvents.Clear();
-            foreach (var ev in query)
-            {
-                FilteredEvents.Add(ev);
+                _allEvents[_allEvents.IndexOf(target)] = target with { IsConfirmed = true };
+                ApplyFilter();
             }
         }
+    }
 
-        [RelayCommand]
-        private async Task ShowEventDetails(UserEventRsvpResponse selectedEvent)
+    [RelayCommand]
+    private async Task DeclineRsvp(int eventId)
+    {
+        var success = await _rsvpService.AcceptRsvpAsync(eventId);
+        if (success)
         {
-            if (selectedEvent == null) return;
-
-            // Instantiates our custom visual popover dialog card instance
-            var popup = new Views.EventDetailsPopup(selectedEvent);
-
-            // Shows the modal onto the Shell viewport window natively
-            var result = await Shell.Current.CurrentPage.ShowPopupAsync(popup);
-
-            if (result == null) return;
-            else 
+            // Instantly sync internal data state matching the database modification
+            var target = _allEvents.FirstOrDefault(e => e.Id == eventId);
+            if (target != null)
             {
-                await AcceptRsvpCommand.ExecuteAsync(selectedEvent.Id);
+                _allEvents[_allEvents.IndexOf(target)] = target with { IsConfirmed = true };
+                ApplyFilter();
             }
-            // Check if the result is not null and is explicitly a boolean true
-           
         }
+    }
+
+    [RelayCommand]
+    private void FilterPending()
+    {
+        ShowConfirmed = false;
+        ApplyFilter();
+    }
+
+    [RelayCommand]
+    private void FilterConfirmed()
+    {
+        ShowConfirmed = true;
+        ApplyFilter();
+    }
+
+    public void ApplyFilter()
+    {
+        var query = _allEvents.AsEnumerable();
+
+        // 1. Filter by Status matching the targeted stream tab mode
+        query = query.Where(e => e.IsConfirmed == ShowConfirmed);
+
+        // 2. Filter by Search Query string criteria matching
+        if (!string.IsNullOrWhiteSpace(SearchText))
+        {
+            query = query.Where(e => e.Title.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
+                                     e.Location.Contains(SearchText, StringComparison.OrdinalIgnoreCase));
+        }
+
+        FilteredEvents.Clear();
+        foreach (var ev in query)
+        {
+            FilteredEvents.Add(ev);
+        }
+    }
+
+    [RelayCommand]
+    private async Task ShowEventDetails(UserEventRsvpResponse selectedEvent)
+    {
+        if (selectedEvent == null) return;
+
+        await Shell.Current.GoToAsync("///eventdetails", new Dictionary<string, object>
+        {
+            { "EventDetails", selectedEvent }
+        });
+
     }
 }

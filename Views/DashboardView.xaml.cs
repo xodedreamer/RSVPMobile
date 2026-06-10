@@ -13,6 +13,17 @@ public partial class DashboardView : ContentPage
     {
         base.OnAppearing();
 
+        await Task.Delay(200);
+
+        foreach (var child in StatsContainer.Children)
+        {
+            if (child is VisualElement card)
+            {
+                card.Opacity = 0;
+                await card.FadeTo(1, 350, Easing.CubicIn);
+            }
+        }
+
         // Safe execution cast to trigger initial feed populate
         if (BindingContext is DashboardViewModel vm)
         {

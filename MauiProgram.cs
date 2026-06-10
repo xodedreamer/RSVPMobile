@@ -67,6 +67,9 @@ namespace RSVPMobile
 
             builder.Services.AddTransient<QRPassView>();
 
+            builder.Services.AddTransient<EventDetailsPage>();
+            builder.Services.AddTransient<EventDetailsViewModel>();
+
 
             // And update your View registration to be Singleton if they are main tabs
             builder.Services.AddSingleton<DashboardView>();

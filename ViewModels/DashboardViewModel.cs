@@ -19,7 +19,10 @@ namespace RSVPMobile.ViewModels
         [ObservableProperty] private bool _isFabExpanded;
         [ObservableProperty] private bool _isRefreshing;
         [ObservableProperty] private int _totalEventsCount;
-
+        [ObservableProperty] private int _confirmedCount;
+        [ObservableProperty] private int _tentativeCount;
+        [ObservableProperty] private int _declinedCount;
+        [ObservableProperty] private int _pendingCount;
         // ObservableCollection updates the UI elements instantly when items load
         public ObservableCollection<EventResponse> Events { get; } = new();
 
@@ -49,6 +52,14 @@ namespace RSVPMobile.ViewModels
                     }
                     TotalEventsCount = Events.Count;
                 }
+
+                // 2. Load RSVP stats
+                var stats = await _eventService.GetRsvpStatsAsync();
+
+                ConfirmedCount = stats.Confirmed;
+                TentativeCount = stats.Tentative;
+                DeclinedCount = stats.Declined;
+                PendingCount = stats.Pending;
             }
             catch (Exception ex)
             {

@@ -50,5 +50,15 @@ namespace RSVPMobile.Services.Events
                 return Enumerable.Empty<EventResponse>();
             }
         }
+
+        public async Task<RsvpStatsDto> GetRsvpStatsAsync()
+        {
+            var response = await _httpClient.GetAsync("events/stats");
+
+            if (!response.IsSuccessStatusCode)
+                return new RsvpStatsDto();
+
+            return await response.Content.ReadFromJsonAsync<RsvpStatsDto>();
+        }
     }
 }

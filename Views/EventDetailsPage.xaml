@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:RSVPMobile.ViewModels"
+             x:Class="RSVPMobile.Views.EventDetailsPage"
+             x:DataType="vm:EventDetailsViewModel"
+             BackgroundColor="{StaticResource BackgroundDark}">
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="20">
+
+            <Image Source="{Binding Event.ImageUrl}" HeightRequest="200" Aspect="AspectFill"/>
+
+            <Label Text="{Binding Event.Title}" 
+                   FontSize="26" 
+                   FontAttributes="Bold" 
+                   TextColor="White"/>
+
+            <Label Text="{Binding Event.Location}" 
+                   TextColor="{StaticResource SecondaryText}" 
+                   FontSize="14"/>
+
+            <Label Text="{Binding Event.Description}" 
+                   TextColor="#94A3B8" 
+                   FontSize="14"/>
+
+            <VerticalStackLayout Spacing="10" Margin="0,20,0,0">
+
+                <Button Text="Accept" 
+                        BackgroundColor="#10B981"
+                        TextColor="White"
+                        Command="{Binding AcceptCommand}"/>
+
+                <Button Text="Tentative" 
+                        BackgroundColor="#F59E0B"
+                        TextColor="White"
+                        Command="{Binding TentativeCommand}"/>
+
+                <Button Text="Decline" 
+                        BackgroundColor="#EF4444"
+                        TextColor="White"
+                        Command="{Binding DeclineCommand}"/>
+
+                <Button Text="Close"
+                        BackgroundColor="#2D2D3A"
+                        TextColor="White"
+                        Command="{Binding CloseCommand}"/>
+            </VerticalStackLayout>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

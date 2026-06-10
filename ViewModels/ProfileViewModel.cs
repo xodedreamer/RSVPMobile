@@ -10,10 +10,21 @@ namespace RSVPMobile.ViewModels
     public partial class ProfileViewModel : ObservableObject
     {
         private readonly IAuthService _authService;
+        private readonly IUserSessionService _sessionService;
+        [ObservableProperty] private string _email = string.Empty;
+        [ObservableProperty] private string _userName = string.Empty;
+        [ObservableProperty] private string _phoneNumber= string.Empty;
+        [ObservableProperty] private string _memberSince = string.Empty;
 
-        public ProfileViewModel(IAuthService authService)
+        public ProfileViewModel(IAuthService authService, IUserSessionService session)
         {
             _authService = authService;
+            _sessionService = session;
+
+            UserName = _sessionService.UserName;
+            Email = _sessionService.Email;
+            PhoneNumber = _sessionService.PhoneNumber;
+            MemberSince = $"Member since {_sessionService.MemberSince:MMMM yyyy}";
         }
 
         [RelayCommand]
@@ -24,6 +35,7 @@ namespace RSVPMobile.ViewModels
             if (answer)
             {
                 await _authService.LogoutAsync();
+                SecureStorage.RemoveAll();
                 // AuthService.LogoutAsync should call:
                 // await Shell.Current.GoToAsync("//LoginView");
             }

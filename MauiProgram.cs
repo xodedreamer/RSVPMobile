@@ -80,6 +80,8 @@ namespace RSVPMobile
             builder.Services.AddTransient<LoginViewModel>();
             builder.Services.AddTransient<LoginView>();
 
+            builder.Services.AddSingleton<IUserSessionService, UserSessionService>();
+
 #if DEBUG
             builder.Logging.AddDebug();
 #endif

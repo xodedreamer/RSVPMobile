@@ -63,6 +63,17 @@
                     </Border>
                 </VerticalStackLayout>
 
+                <!-- Phone Number -->
+                <VerticalStackLayout Spacing="5">
+                    <Label Text="Phone Number" TextColor="White" />
+                    <Border Style="{StaticResource InputBorderStyle}">
+                        <Entry Text="{Binding PhoneNumber, Mode=TwoWay}" 
+                           Placeholder="(123) 456-7890" 
+                           PlaceholderColor="#4B5563" 
+                           TextColor="White" 
+                           Keyboard="Telephone"/>
+                    </Border>
+                </VerticalStackLayout>
                 <!-- Password -->
                 <VerticalStackLayout Spacing="5">
                     <Label Text="Password" TextColor="White" />

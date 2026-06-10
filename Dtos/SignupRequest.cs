@@ -4,5 +4,5 @@ using System.Text;
 
 namespace RSVPMobile.Dtos
 {
-    public record SignupRequest(string fullName, string email, string passwordHash, string role);
+    public record SignupRequest(string fullName, string email, string passwordHash, string role, string phoneNumber);
 }

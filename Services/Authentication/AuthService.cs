@@ -10,7 +10,12 @@ namespace RSVPMobile.Services.Authentication
 {
     public class AuthService : BaseApiService, IAuthService
     {
-        public AuthService(HttpClient httpClient) : base(httpClient) { }
+        private readonly IUserSessionService _session;
+        public AuthService(HttpClient httpClient, IUserSessionService session)
+    : base(httpClient)
+        {
+            _session = session;
+        }
 
         public async Task<bool> LoginAsync(LoginRequest loginDto)
         {
@@ -22,6 +27,7 @@ namespace RSVPMobile.Services.Authentication
 
                 var response = await _httpClient.PostAsJsonAsync("auth/login", loginDto);
 
+
                 if (response.IsSuccessStatusCode)
                 {
                     var result = await response.Content.ReadFromJsonAsync<AuthResponse>();
@@ -31,6 +37,8 @@ namespace RSVPMobile.Services.Authentication
                         // Securely store the JWT for future requests
                         await SecureStorage.Default.SetAsync("auth_token", result.Token);
 
+                        _session.LoadFromLoginResponse(result);
+
                         if (!string.IsNullOrEmpty(result.FullName))
                         {
                             Preferences.Default.Set("user_name", result.FullName);
@@ -38,6 +46,7 @@ namespace RSVPMobile.Services.Authentication
                             Preferences.Default.Set("user_role", result.Role);
 
                         }
+
                         return true;
                     }
                 }

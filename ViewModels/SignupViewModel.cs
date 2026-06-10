@@ -16,6 +16,7 @@ namespace RSVPMobile.ViewModels
         [ObservableProperty] private string _confirmPassword;
         [ObservableProperty] private string _selectedRole = "Attendee"; // Default
         [ObservableProperty] private bool _isBusy;
+        [ObservableProperty] private string _phoneNumber;
 
         private readonly IAuthService _authService;
 
@@ -31,7 +32,7 @@ namespace RSVPMobile.ViewModels
             }
 
             IsBusy = true;
-            var request = new SignupRequest(FullName, Email, Password, SelectedRole);
+            var request = new SignupRequest(FullName, Email, Password, SelectedRole, PhoneNumber);
             var success = await _authService.SignupAsync(request);
             IsBusy = false;
 

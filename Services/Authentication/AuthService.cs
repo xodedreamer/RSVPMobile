@@ -52,9 +52,10 @@ namespace RSVPMobile.Services.Authentication
                 }
                 return false;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 // Handle network or serialization errors
+                System.Diagnostics.Debug.WriteLine($"LoginAsync Exception: {ex.Message}");
                 return false;
             }
         }

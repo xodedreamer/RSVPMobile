@@ -24,7 +24,7 @@ namespace RSVPMobile
 
             //1. Configure HttpClient with your API endpoint
             string baseUrl = DeviceInfo.Platform == DevicePlatform.Android
-                ? "http://10.0.2.2:5148/api/"
+               ? "http://10.0.2.2:5148/api/"
                 : "http://localhost:5148/api/";
 
             // 1. Register the handler
@@ -50,6 +50,21 @@ namespace RSVPMobile
             })
             .AddHttpMessageHandler<AuthHeaderHandler>();
 
+            builder.Services.ConfigureHttpClientDefaults(options =>
+            {
+                options.ConfigurePrimaryHttpMessageHandler(() =>
+                {
+#if DEBUG
+                    return new HttpClientHandler
+                    {
+                        // This is still required so the emulator trusts your PC's local dev SSL cert
+                        ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
+                    };
+#else
+        return new HttpClientHandler();
+#endif
+                });
+            });
             // 2. Register the RSVP MVVM components (Crucial to fix the crash!)
             builder.Services.AddTransient<RSVPViewModel>();
             builder.Services.AddTransient<RSVPView>();
@@ -60,7 +75,7 @@ namespace RSVPMobile
             builder.Services.AddTransient<SignupViewModel>();
 
             builder.Services.AddTransient<CreateEventView>();
-            builder.Services.AddTransient<EventViewModel>();
+            builder.Services.AddTransient<AttendeeViewModel>();
 
             builder.Services.AddTransient<ProfileView>();
             builder.Services.AddTransient<ProfileViewModel>();

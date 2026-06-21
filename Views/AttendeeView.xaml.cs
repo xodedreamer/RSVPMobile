@@ -5,14 +5,18 @@ namespace RSVPMobile.Views;
 
 public partial class AttendeeView : ContentPage
 {
+    private readonly AttendeeViewModel _vm;
 
-    private readonly EventViewModel _viewModel;
-    private const uint AnimationDuration = 800u;
-    public AttendeeView()
-	{
-		InitializeComponent();
+    public AttendeeView(AttendeeViewModel vm)
+    {
+        InitializeComponent();
+        _vm = vm;
+        BindingContext = _vm;
+    }
 
-        _viewModel = new EventViewModel();
-        this.BindingContext = _viewModel;
+    protected override async void OnAppearing()
+    {
+        base.OnAppearing();
+        await _vm.InitializeAsync();
     }
 }

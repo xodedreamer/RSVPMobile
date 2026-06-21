@@ -25,6 +25,9 @@ namespace RSVPMobile.ViewModels
         public LoginViewModel(IAuthService authService)
         {
             _authService = authService;
+            Email = "lindo@gmail.com";
+            Password = "Test@01";
+
         }
 
         [RelayCommand]

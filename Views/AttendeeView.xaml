@@ -4,61 +4,122 @@
              x:Class="RSVPMobile.Views.AttendeeView"
              Title="AttendeeView"
              xmlns:vm="clr-namespace:RSVPMobile.ViewModels"
+             xmlns:models="clr-namespace:RSVPMobile.Models"
              Shell.NavBarIsVisible="False"
              BackgroundColor="{StaticResource BackgroundDark}">
 
-
+    
     <Grid RowDefinitions="*, Auto">
         <ScrollView Grid.Row="0">
             <VerticalStackLayout Padding="20" Spacing="15">
-                <Label Text="Admin Panel" TextColor="{StaticResource SecondaryText}" FontSize="12"/>
-                <Label Text="Attendees" FontSize="28" FontAttributes="Bold" TextColor="White"/>
 
+                <Label Text="Admin Panel"
+                       TextColor="{StaticResource SecondaryText}"
+                       FontSize="12"/>
+
+                <Label Text="Attendees"
+                       FontSize="28"
+                       FontAttributes="Bold"
+                       TextColor="White"/>
+
+                <!-- Event Filter -->
+                <Picker Title="Filter by Event"
+                        ItemsSource="{Binding Events}"
+                        ItemDisplayBinding="{Binding Title}"
+                        SelectedItem="{Binding SelectedEvent}"
+                        TextColor="White"
+                        TitleColor="White"
+                        BackgroundColor="#2D2D3A"/>
+
+                <!-- Stats -->
                 <Grid ColumnDefinitions="*, *, *" ColumnSpacing="10">
                     <Border Style="{StaticResource StatsCardStyle}">
                         <VerticalStackLayout>
-                            <Label Text="8" FontSize="20" FontAttributes="Bold" TextColor="White"/>
-                            <Label Text="Total" FontSize="10" TextColor="{StaticResource SecondaryText}"/>
+                            <Label Text="{Binding Total}"
+                                   FontSize="20"
+                                   FontAttributes="Bold"
+                                   TextColor="White"/>
+                            <Label Text="Total"
+                                   FontSize="10"
+                                   TextColor="{StaticResource SecondaryText}"/>
                         </VerticalStackLayout>
                     </Border>
+
                     <Border Grid.Column="1" Style="{StaticResource StatsCardStyle}">
                         <VerticalStackLayout>
-                            <Label Text="5" FontSize="20" FontAttributes="Bold" TextColor="#4ADE80"/>
-                            <Label Text="Confirmed" FontSize="10" TextColor="{StaticResource SecondaryText}"/>
+                            <Label Text="{Binding Confirmed}"
+                                   FontSize="20"
+                                   FontAttributes="Bold"
+                                   TextColor="#4ADE80"/>
+                            <Label Text="Confirmed"
+                                   FontSize="10"
+                                   TextColor="{StaticResource SecondaryText}"/>
                         </VerticalStackLayout>
                     </Border>
+
                     <Border Grid.Column="2" Style="{StaticResource StatsCardStyle}">
                         <VerticalStackLayout>
-                            <Label Text="2" FontSize="20" FontAttributes="Bold" TextColor="#FBBF24"/>
-                            <Label Text="Pending" FontSize="10" TextColor="{StaticResource SecondaryText}"/>
+                            <Label Text="{Binding Pending}"
+                                   FontSize="20"
+                                   FontAttributes="Bold"
+                                   TextColor="#FBBF24"/>
+                            <Label Text="Pending"
+                                   FontSize="10"
+                                   TextColor="{StaticResource SecondaryText}"/>
                         </VerticalStackLayout>
                     </Border>
                 </Grid>
 
+                <!-- Search (optional: wire later) -->
                 <Border Style="{StaticResource SearchBorderStyle}">
-                    <Entry Placeholder="Search by name or email..." PlaceholderColor="#4B5563" TextColor="White"/>
+                    <Entry Placeholder="Search by name or email..."
+                           PlaceholderColor="#4B5563"
+                           TextColor="White"/>
                 </Border>
 
+                <!-- Attendee List -->
                 <CollectionView ItemsSource="{Binding Attendees}">
                     <CollectionView.ItemTemplate>
-                        <DataTemplate x:DataType="vm:Attendee">
+                        <DataTemplate x:DataType="models:Attendee">
                             <Border Style="{StaticResource StatsCardStyle}" Margin="0,5">
-                                <Grid ColumnDefinitions="50, *, Auto" VerticalOptions="Center">
-                                    <Border BackgroundColor="#2D2D3A" StrokeShape="RoundRectangle 25" HeightRequest="40" WidthRequest="40">
-                                        <Label Text="{Binding Initial}" HorizontalOptions="Center" VerticalOptions="Center" TextColor="{StaticResource PrimaryPurple}"/>
+                                <Grid ColumnDefinitions="50, *, Auto"
+                                      VerticalOptions="Center">
+
+                                    <Border BackgroundColor="#2D2D3A"
+                                            StrokeShape="RoundRectangle 25"
+                                            HeightRequest="40"
+                                            WidthRequest="40">
+                                        <Label Text="{Binding Initial}"
+                                               HorizontalOptions="Center"
+                                               VerticalOptions="Center"
+                                               TextColor="{StaticResource PrimaryPurple}"/>
                                     </Border>
-                                    <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Margin="10,0">
-                                        <Label Text="{Binding Name}" TextColor="White" FontAttributes="Bold"/>
-                                        <Label Text="{Binding Email}" TextColor="{StaticResource SecondaryText}" FontSize="12"/>
+
+                                    <VerticalStackLayout Grid.Column="1"
+                                                         VerticalOptions="Center"
+                                                         Margin="10,0">
+                                        <Label Text="{Binding Name}"
+                                               TextColor="White"
+                                               FontAttributes="Bold"/>
+                                        <Label Text="{Binding Email}"
+                                               TextColor="{StaticResource SecondaryText}"
+                                               FontSize="12"/>
                                     </VerticalStackLayout>
-                                    <Border Grid.Column="2" StrokeShape="RoundRectangle 10" Padding="8,2" Stroke="{Binding StatusColor}">
-                                        <Label Text="{Binding Status}" TextColor="{Binding StatusColor}" FontSize="10"/>
+
+                                    <Border Grid.Column="2"
+                                            StrokeShape="RoundRectangle 10"
+                                            Padding="8,2"
+                                            Stroke="{Binding StatusColor}">
+                                        <Label Text="{Binding Status}"
+                                               TextColor="{Binding StatusColor}"
+                                               FontSize="10"/>
                                     </Border>
                                 </Grid>
                             </Border>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
+
             </VerticalStackLayout>
         </ScrollView>
     </Grid>

@@ -146,4 +146,40 @@ public partial class RSVPViewModel : ObservableObject
         });
 
     }
+
+    [RelayCommand]
+    private async Task SetReminder(UserEventRsvpResponse ev)
+    {
+        if (ev == null) return;
+
+        try
+        {
+            var title = ev.Title;
+            var date = new DateTimeOffset(ev.EventDate);
+
+#if ANDROID
+            // Opens Android Calendar at the event time
+
+            var uri = Android.Net.Uri.Parse($"content://com.android.calendar/time/{date.ToUnixTimeMilliseconds()}");
+            var intent = new Android.Content.Intent(Android.Content.Intent.ActionView, uri);
+            //Android.App.Application.Context.StartActivity(intent);
+
+
+            // REQUIRED when launching from MAUI (non-Activity context)
+            intent.AddFlags(Android.Content.ActivityFlags.NewTask);
+
+            Android.App.Application.Context.StartActivity(intent);
+#elif IOS
+        // Opens iOS Calendar app
+        await Launcher.OpenAsync("calshow:" + date.ToUnixTimeSeconds());
+#else
+        await Shell.Current.DisplayAlert("Reminder", "Calendar integration is not supported on this device.", "OK");
+#endif
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"Reminder error: {ex.Message}");
+            await Shell.Current.DisplayAlert("Error", "Unable to open calendar.", "OK");
+        }
+    }
 }

@@ -80,7 +80,7 @@ namespace RSVPMobile.Services.Events
                 Debug.WriteLine($"Error fetching events: {ex.Message}");
                 throw;
             }
-
+             
         }
 
         public async Task<EventAttendeeResponseDto> GetEventAttendeesAsync(int eventId)

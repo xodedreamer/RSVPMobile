@@ -67,30 +67,45 @@
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="models:UserEventRsvpResponse">
                             <Border Style="{StaticResource StatsCardStyle}" Padding="15" Margin="0,0,0,12">
-                                <Grid ColumnDefinitions="60, *, Auto" ColumnSpacing="15">
+                                <VerticalStackLayout Spacing="12">
 
-                                    <Border StrokeShape="RoundRectangle 12" HeightRequest="60" WidthRequest="60">
-                                        <Image Source="{Binding ImageUrl, FallbackValue='tech_conf_thumb.png'}" Aspect="AspectFill"/>
-                                    </Border>
+                                    <!-- Top Row -->
+                                    <Grid ColumnDefinitions="60, *, Auto" ColumnSpacing="15">
 
-                                    <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="4">
-                                        <Label Text="{Binding Title}" TextColor="White" FontAttributes="Bold" FontSize="15" LineBreakMode="TailTruncation"/>
-                                        <Label Text="{Binding EventDate, StringFormat='{0:MMMM dd, yyyy}'}" TextColor="{StaticResource SecondaryText}" FontSize="12"/>
-                                    </VerticalStackLayout>
+                                        <Border StrokeShape="RoundRectangle 12" HeightRequest="60" WidthRequest="60">
+                                            <Image Source="{Binding ImageUrl, FallbackValue='tech_conf_thumb.png'}" Aspect="AspectFill"/>
+                                        </Border>
 
-                                    <Border Grid.Column="2" 
-                                            VerticalOptions="Center"
-                                            Stroke="{Binding IsConfirmed, Converter={StaticResource StatusColorConverter}}" 
-                                            StrokeThickness="1"
-                                            StrokeShape="RoundRectangle 8" 
-                                            Padding="12,6"
-                                            BackgroundColor="#0D10B981">
-                                        <Label Text="{Binding IsConfirmed, Converter={StaticResource StatusTextConverter}}" 
-                                               TextColor="{Binding IsConfirmed, Converter={StaticResource StatusColorConverter}}" 
-                                               FontSize="12" 
-                                               FontAttributes="Bold"/>
-                                    </Border>
-                                </Grid>
+                                        <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="4">
+                                            <Label Text="{Binding Title}" TextColor="White" FontAttributes="Bold" FontSize="15" LineBreakMode="TailTruncation"/>
+                                            <Label Text="{Binding EventDate, StringFormat='{0:MMMM dd, yyyy}'}" TextColor="{StaticResource SecondaryText}" FontSize="12"/>
+                                        </VerticalStackLayout>
+
+                                        <Border Grid.Column="2"
+                            VerticalOptions="Center"
+                            Stroke="{Binding IsConfirmed, Converter={StaticResource StatusColorConverter}}"
+                            StrokeThickness="1"
+                            StrokeShape="RoundRectangle 8"
+                            Padding="12,6"
+                            BackgroundColor="#0D10B981">
+                                            <Label Text="{Binding IsConfirmed, Converter={StaticResource StatusTextConverter}}"
+                               TextColor="{Binding IsConfirmed, Converter={StaticResource StatusColorConverter}}"
+                               FontSize="12"
+                               FontAttributes="Bold"/>
+                                        </Border>
+                                    </Grid>
+
+                                    <!-- Reminder Button -->
+                                    <Button Text="Set Reminder"
+                        Command="{Binding Source={RelativeSource AncestorType={x:Type vm:RSVPViewModel}}, Path=SetReminderCommand}"
+                        CommandParameter="{Binding .}"
+                        BackgroundColor="{StaticResource PrimaryPurple}"
+                        TextColor="White"
+                        CornerRadius="10"
+                        HeightRequest="40"
+                        HorizontalOptions="End"/>
+
+                                </VerticalStackLayout>
                             </Border>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>

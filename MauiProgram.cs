@@ -1,6 +1,8 @@
 ﻿using CommunityToolkit.Maui;
+using CommunityToolkit.Maui.Views;
 //using CommunityToolkit.Maui.Core;
 using Microsoft.Extensions.Logging;
+using Plugin.LocalNotification;
 using RSVPMobile.Services.Authentication;
 using RSVPMobile.Services.Events;
 using RSVPMobile.ViewModels;
@@ -16,6 +18,7 @@ namespace RSVPMobile
             builder
                 .UseMauiApp<App>()
                 .UseMauiCommunityToolkit()
+                .UseLocalNotification()   
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -94,6 +97,8 @@ namespace RSVPMobile
             // 2. Register ViewModels and Pages
             builder.Services.AddTransient<LoginViewModel>();
             builder.Services.AddTransient<LoginView>();
+
+            builder.Services.AddTransient<ReminderPopup>();
 
             builder.Services.AddSingleton<IUserSessionService, UserSessionService>();
 

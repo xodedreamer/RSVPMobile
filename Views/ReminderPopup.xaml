@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="RSVPMobile.Views.ReminderPopup"
+             BackgroundColor="#1A1A24"
+             DesiredSize="300,250">
+
+    <VerticalStackLayout Padding="20" Spacing="20">
+
+        <Label Text="Set Reminder"
+               FontSize="20"
+               FontAttributes="Bold"
+               TextColor="White"
+               HorizontalOptions="Center"/>
+
+        <Button Text="10 minutes before"
+                BackgroundColor="{StaticResource PrimaryPurple}"
+                TextColor="White"
+                CornerRadius="10"
+                Clicked="TenMinutes_Clicked"/>
+
+        <Button Text="30 minutes before"
+                BackgroundColor="{StaticResource PrimaryPurple}"
+                TextColor="White"
+                CornerRadius="10"
+                Clicked="ThirtyMinutes_Clicked"/>
+
+        <Button Text="1 hour before"
+                BackgroundColor="{StaticResource PrimaryPurple}"
+                TextColor="White"
+                CornerRadius="10"
+                Clicked="Hour_Clicked"/>
+
+    </VerticalStackLayout>
+</toolkit:Popup>

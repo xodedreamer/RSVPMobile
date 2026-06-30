@@ -2,14 +2,18 @@
 using CommunityToolkit.Maui.Views; // Required for IPopupResult parsing
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Plugin.LocalNotification;
+using Plugin.LocalNotification.Core.Models;
 using RSVPMobile.Models;
 using RSVPMobile.Services; 
 using RSVPMobile.Services.Events;
+using RSVPMobile.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using Plugin.LocalNotification.AndroidOption;
 
 namespace RSVPMobile.ViewModels;
 
@@ -152,34 +156,35 @@ public partial class RSVPViewModel : ObservableObject
     {
         if (ev == null) return;
 
-        try
+        var popup = new ReminderPopup();
+
+        // Subscribe to the popup callback
+        popup.ReminderSelected += async minutes =>
         {
-            var title = ev.Title;
-            var date = new DateTimeOffset(ev.EventDate);
+            var notifyTime = ev.EventDate.AddMinutes(-minutes);
 
-#if ANDROID
-            // Opens Android Calendar at the event time
+            var notification = new NotificationRequest
+            {
+                NotificationId = ev.Id, // Unique per event
+                Title = "Event Reminder",
+                Description = $"{ev.Title} starts at {ev.EventDate:MMM dd, HH:mm}",
+                Schedule = new NotificationRequestSchedule
+                {
+                    NotifyTime = notifyTime
+                }
+            };
 
-            var uri = Android.Net.Uri.Parse($"content://com.android.calendar/time/{date.ToUnixTimeMilliseconds()}");
-            var intent = new Android.Content.Intent(Android.Content.Intent.ActionView, uri);
-            //Android.App.Application.Context.StartActivity(intent);
+            // Show the notification
+            await LocalNotificationCenter.Current.Show(notification);
 
+            // Confirmation alert
+            await Shell.Current.DisplayAlert(
+                "Reminder Set",
+                $"You will be reminded {minutes} minutes before the event.",
+                "OK");
+        };
 
-            // REQUIRED when launching from MAUI (non-Activity context)
-            intent.AddFlags(Android.Content.ActivityFlags.NewTask);
-
-            Android.App.Application.Context.StartActivity(intent);
-#elif IOS
-        // Opens iOS Calendar app
-        await Launcher.OpenAsync("calshow:" + date.ToUnixTimeSeconds());
-#else
-        await Shell.Current.DisplayAlert("Reminder", "Calendar integration is not supported on this device.", "OK");
-#endif
-        }
-        catch (Exception ex)
-        {
-            System.Diagnostics.Debug.WriteLine($"Reminder error: {ex.Message}");
-            await Shell.Current.DisplayAlert("Error", "Unable to open calendar.", "OK");
-        }
+        // Show the popup
+        await Shell.Current.CurrentPage.ShowPopupAsync(popup);
     }
 }

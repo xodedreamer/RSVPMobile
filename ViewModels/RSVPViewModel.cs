@@ -25,6 +25,7 @@ public partial class RSVPViewModel : ObservableObject
     [ObservableProperty] private string _searchText;
     [ObservableProperty] private bool _showConfirmed = false; // False = Pending, True = Confirmed
     [ObservableProperty] private bool _isBusy;
+    private List<UserEventRsvpResponse> _confirmedEvents;
 
     public ObservableCollection<UserEventRsvpResponse> FilteredEvents { get; } = new();
 
@@ -42,7 +43,7 @@ public partial class RSVPViewModel : ObservableObject
         try
         {
             // Hits http://localhost:5148/api/events/ via your configured service client layer
-            var events = await _rsvpService.GetUserEventsAsync();
+            var events = await _rsvpService.GetEventsAsync();
             _allEvents = events.ToList();
             ApplyFilter();
         }
@@ -105,49 +106,70 @@ public partial class RSVPViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private void FilterPending()
+    private async Task FilterPending()
     {
         ShowConfirmed = false;
-        ApplyFilter();
+        await LoadEventsAsync();
     }
 
     [RelayCommand]
-    private void FilterConfirmed()
+    private async Task FilterConfirmed()
     {
         ShowConfirmed = true;
-        ApplyFilter();
+        await LoadConfirmedEventsAsync();
     }
 
     public void ApplyFilter()
     {
-        var query = _allEvents.AsEnumerable();
+        IEnumerable<UserEventRsvpResponse> query;
 
-        // 1. Filter by Status matching the targeted stream tab mode
-        query = query.Where(e => e.IsConfirmed == ShowConfirmed);
+        // 1. Choose the correct source list
+        query = ShowConfirmed ? _confirmedEvents : _allEvents;
 
-        // 2. Filter by Search Query string criteria matching
+        // 2. Apply search
         if (!string.IsNullOrWhiteSpace(SearchText))
         {
-            query = query.Where(e => e.Title.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
-                                     e.Location.Contains(SearchText, StringComparison.OrdinalIgnoreCase));
+            query = query.Where(e =>
+                (e.Title?.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ?? false) ||
+                (e.Location?.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ?? false));
         }
 
+        // 3. Update UI
         FilteredEvents.Clear();
         foreach (var ev in query)
-        {
             FilteredEvents.Add(ev);
-        }
     }
 
     [RelayCommand]
-    private async Task ShowEventDetails(UserEventRsvpResponse selectedEvent)
+    private async Task ShowEventDetails(UserEventRsvpResponse ev)
     {
-        if (selectedEvent == null) return;
+        if (ev == null) return;
 
-        await Shell.Current.GoToAsync("///eventdetails", new Dictionary<string, object>
+        var popup = new EventDetailsPopup(ev);
+
+        popup.ActionSelected += async action =>
         {
-            { "EventDetails", selectedEvent }
-        });
+            switch (action)
+            {
+                case "accept":
+                    await AcceptRsvp(ev.Id);
+                    break;
+
+                case "tentative":
+                    await TentativeRsvp(ev.Id);
+                    break;
+
+                case "decline":
+                    await DeclineRsvp(ev.Id);
+                    break;
+
+                case "close":
+                default:
+                    break;
+            }
+        };
+
+        await Shell.Current.CurrentPage.ShowPopupAsync(popup);
 
     }
 
@@ -186,5 +208,23 @@ public partial class RSVPViewModel : ObservableObject
 
         // Show the popup
         await Shell.Current.CurrentPage.ShowPopupAsync(popup);
+    }
+
+    [RelayCommand]
+    public async Task LoadConfirmedEventsAsync()
+    {
+        if (IsBusy) return;
+        IsBusy = true;
+
+        try
+        {
+            var events = await _rsvpService.GetUserEventsAsync(); // Confirmed only
+            _confirmedEvents = events.ToList();
+            ApplyFilter();
+        }
+        finally
+        {
+            IsBusy = false;
+        }
     }
 }

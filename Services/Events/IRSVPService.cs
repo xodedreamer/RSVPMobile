@@ -9,5 +9,6 @@ namespace RSVPMobile.Services.Events
     {
         Task<IEnumerable<UserEventRsvpResponse>> GetUserEventsAsync();
         Task<bool> AcceptRsvpAsync(int eventId);
+        Task<IEnumerable<UserEventRsvpResponse>> GetEventsAsync();
     }
 }
